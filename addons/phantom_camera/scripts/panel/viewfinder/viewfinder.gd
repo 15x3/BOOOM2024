@@ -4,8 +4,6 @@ extends Control
 #region Constants
 
 const _constants = preload("res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_constants.gd")
-
-# TODO - Should be in a central location
 const _camera_2d_icon: CompressedTexture2D = preload("res://addons/phantom_camera/icons/viewfinder/Camera2DIcon.svg")
 const _camera_3d_icon: CompressedTexture2D = preload("res://addons/phantom_camera/icons/viewfinder/Camera3DIcon.svg")
 const _pcam_host_icon: CompressedTexture2D = preload("res://addons/phantom_camera/icons/phantom_camera_host.svg")
@@ -162,8 +160,6 @@ func _settings_changed() -> void:
 	var ratio: float = viewport_width / viewport_height
 	aspect_ratio_container.set_ratio(ratio)
 	camera_viewport_panel.size.x = viewport_width / (viewport_height / sub_viewport.size.y)
-	# TODO - Add resizer for Framed Viewfinder
-
 
 func _node_added_or_removed(_node: Node) -> void:
 	visibility_check()

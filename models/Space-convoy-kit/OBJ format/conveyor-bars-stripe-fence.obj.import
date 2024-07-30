@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://y2pasl5xnhay"
+path="res://.godot/imported/conveyor-bars-stripe-fence.obj-fcc085dc8e98f8aa0d45d975a26db7bb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/conveyor-bars-stripe-fence.obj-fcc085dc8e98f8aa0d45d975a26db7bb.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/conveyor-bars-stripe-fence.obj"
+dest_files=["res://.godot/imported/conveyor-bars-stripe-fence.obj-fcc085dc8e98f8aa0d45d975a26db7bb.mesh", "res://.godot/imported/conveyor-bars-stripe-fence.obj-fcc085dc8e98f8aa0d45d975a26db7bb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

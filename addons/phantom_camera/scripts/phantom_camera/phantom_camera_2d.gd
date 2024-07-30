@@ -368,9 +368,7 @@ var _limit_node: Node2D
 @export var limit_margin: Vector4i:
 	set = set_limit_margin,
 	get = get_limit_margin
-#@export var limit_smoothed: bool = false: # TODO - Needs proper support
-	#set = set_limit_smoothing,
-	#get = get_limit_smoothing
+
 var _limit_inactive_pcam: bool
 
 #endregion
@@ -504,14 +502,14 @@ func _process_logic(delta: float) -> void:
 				if _limit_inactive_pcam:
 					global_position = _set_limit_clamp_position(global_position)
 #			InactiveUpdateMode.EXPONENTIALLY:
-#				TODO - Trigger positional updates less frequently as more Pcams gets added
+
 	_limit_checker()
 	if _should_follow:
 		_follow(delta)
 
 
 func _limit_checker() -> void:
-	## TODO - Needs to see if this can be triggerd only from CollisionShape2D Transform changes
+
 	if Engine.is_editor_hint():
 		if draw_limits:
 			update_limit_all_sides()
@@ -1073,7 +1071,7 @@ func get_follow_damping() -> bool:
 
 ## Assigns new Damping value.
 func set_follow_damping_value(value: Vector2) -> void:
-	## TODO - Should be using @export_range once minimum version support is Godot 4.3
+
 	if value.x < 0: value.x = 0
 	elif value.y < 0: value.y = 0
 	follow_damping_value = value
@@ -1251,7 +1249,7 @@ func set_limit_target(value: NodePath) -> void:
 
 ## Get [member limit_target] node.
 func get_limit_target() -> NodePath:
-	if not limit_target: # TODO - Fixes an spam error if if limit_taret is empty
+	if not limit_target: 
 		return NodePath("")
 	else:
 		return limit_target

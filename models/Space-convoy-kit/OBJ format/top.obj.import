@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dbn1qjwhp083d"
+path="res://.godot/imported/top.obj-0f8d9410a9a0a9f61cde4799b370fedb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/top.obj-0f8d9410a9a0a9f61cde4799b370fedb.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/top.obj"
+dest_files=["res://.godot/imported/top.obj-0f8d9410a9a0a9f61cde4799b370fedb.mesh", "res://.godot/imported/top.obj-0f8d9410a9a0a9f61cde4799b370fedb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

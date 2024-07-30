@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bpcfgnfk6n1sh"
+path="res://.godot/imported/conveyor-bars-stripe-side.obj-604a66543805f0ea695d1ca01accc643.mesh"
+
+[deps]
+
+files=["res://.godot/imported/conveyor-bars-stripe-side.obj-604a66543805f0ea695d1ca01accc643.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/conveyor-bars-stripe-side.obj"
+dest_files=["res://.godot/imported/conveyor-bars-stripe-side.obj-604a66543805f0ea695d1ca01accc643.mesh", "res://.godot/imported/conveyor-bars-stripe-side.obj-604a66543805f0ea695d1ca01accc643.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

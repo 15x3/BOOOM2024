@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+# HACK - RE和SHIFT机制本身有一定联动性
 @export_subgroup("Properties")
 @export var movement_speed = 5
 @export var jump_strength = 10
@@ -43,6 +44,7 @@ var press_timer = 0.0
 
 signal health_updated
 signal death_reloaded
+signal scene_filp_ordered
 
 @onready var camera = $Head/Camera
 @onready var raycast = $Head/Camera/RayCast
@@ -349,7 +351,7 @@ func damage(amount):
 			#return
 
 func on_double_press():
-	print("按了两次")
+	emit_signal("scene_filp_ordered")
 	reset_press_state()
 
 func start_waiting_for_second_press():

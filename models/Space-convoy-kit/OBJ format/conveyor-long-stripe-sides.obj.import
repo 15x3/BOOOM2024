@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bsgbyx3olyhbs"
+path="res://.godot/imported/conveyor-long-stripe-sides.obj-c89b400ab8fb3bb12bf63c9427bf71a2.mesh"
+
+[deps]
+
+files=["res://.godot/imported/conveyor-long-stripe-sides.obj-c89b400ab8fb3bb12bf63c9427bf71a2.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/conveyor-long-stripe-sides.obj"
+dest_files=["res://.godot/imported/conveyor-long-stripe-sides.obj-c89b400ab8fb3bb12bf63c9427bf71a2.mesh", "res://.godot/imported/conveyor-long-stripe-sides.obj-c89b400ab8fb3bb12bf63c9427bf71a2.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

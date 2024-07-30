@@ -584,12 +584,11 @@ func _process_logic(delta: float) -> void:
 		match inactive_update_mode:
 			InactiveUpdateMode.NEVER:	return
 			# InactiveUpdateMode.EXPONENTIALLY:
-			# TODO - Trigger positional updates less frequently as more Pcams gets added
+
 	if _should_follow:
 		_follow(delta)
 	if _should_look_at:
-		_look_at() # TODO - Delta needs to be applied, pending Godot's 3D Physics Interpolation to be implemented
-
+		_look_at() 
 
 func _follow(delta: float) -> void:
 	var follow_position: Vector3
@@ -933,7 +932,7 @@ func get_pcam_host_owner() -> PhantomCameraHost:
 
 ## Assigns new [member priority] value.
 func set_priority(value: int) -> void:
-	priority = abs(value) # TODO - Make any minus values be 0
+	priority = abs(value) 
 	if _has_valid_pcam_owner():
 		get_pcam_host_owner().pcam_priority_updated(self)
 ## Gets current [param Priority] value.
@@ -1119,7 +1118,7 @@ func _check_physics_body(target: Node3D) -> void:
 			print_rich("Until then, try following the guide on the [url=https://phantom-camera.dev/support/faq#i-m-seeing-jitter-what-can-i-do]documentation site[/url] for better results.")
 			print_rich("This tip can be disabled from within [code]Project Settings / Phantom Camera / Tips / Show Jitter Tips[/code]")
 		return
-		## TODO - Enable once Godot supports 3D Physics Interpolation
+
 		#elif not ProjectSettings.get_setting("physics/common/physics_interpolation"):
 				#printerr("Physics Interpolation is disabled in the Project Settings, recommend enabling it to smooth out physics-based camera movement")
 		#_follow_target_physics_based = true
@@ -1146,7 +1145,7 @@ func get_follow_damping() -> bool:
 
 ## Assigns new [member follow_damping_value] value.
 func set_follow_damping_value(value: Vector3) -> void:
-	## TODO - Should be using @export_range once minimum version support is Godot 4.3
+
 	if value.x < 0: value.x = 0
 	elif value.y < 0: value.y = 0
 	elif value.z < 0: value.z = 0

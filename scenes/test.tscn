@@ -8,7 +8,7 @@
 [ext_resource type="FontFile" uid="uid://biqtga8moh7ah" path="res://fonts/lilita_one_regular.ttf" id="5_cdv5b"]
 [ext_resource type="Shader" path="res://shaders/ColorRectDitherTest.gdshader" id="6_6iq8p"]
 [ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://objects/enemy.tscn" id="7_bkjnm"]
-[ext_resource type="MeshLibrary" uid="uid://43yvolvumu35" path="res://models/Space-station-kit/Space-station-MeshLib.tres" id="8_d4nmp"]
+[ext_resource type="MeshLibrary" uid="uid://43yvolvumu35" path="res://models/Space-station-MeshLib.tres" id="8_d4nmp"]
 [ext_resource type="Script" path="res://scripts/DialogueArea.gd" id="12_fegir"]
 [ext_resource type="Resource" uid="uid://p2su8tafmuot" path="res://dialogue/example.dialogue" id="13_15cvu"]
 [ext_resource type="PackedScene" uid="uid://bqgdub07uk1bj" path="res://scenes/NPCexample.tscn" id="14_8oivx"]
@@ -21,8 +21,8 @@ outline_color = Color(0, 0, 0, 0.470588)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fbso1"]
 shader = ExtResource("6_6iq8p")
-shader_parameter/quantize_size = 1.0
-shader_parameter/handle_scale = null
+shader_parameter/quantize_size = 5.0
+shader_parameter/handle_scale = true
 shader_parameter/handle_subpixels = true
 shader_parameter/dither_enabled = true
 shader_parameter/bayer_pattern = 2.0
@@ -112,20 +112,7 @@ player = NodePath("../../Player")
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 15.5, 4, -7.5)
 player = NodePath("../../Player")
 
-[node name="Level" type="Node" parent="."]
-
-[node name="Level2" type="GridMap" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh_library = ExtResource("8_d4nmp")
-cell_size = Vector3(3, 3, 3)
-cell_scale = 3.0
-metadata/_editor_floor_ = Vector3(0, 0, 0)
-
-[node name="Level1" type="GridMap" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh_library = ExtResource("8_d4nmp")
-cell_size = Vector3(3, 3, 3)
-cell_scale = 3.0
+[node name="Level" type="Node3D" parent="."]
 
 [node name="Ground" type="GridMap" parent="Level"]
 mesh_library = ExtResource("8_d4nmp")
@@ -180,3 +167,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25368, 1.85491, 1.74138)
 
 [connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
 [connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]
+[connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]

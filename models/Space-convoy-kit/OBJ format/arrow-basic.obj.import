@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bt5ca1rs0s6b2"
+path="res://.godot/imported/arrow-basic.obj-35f909436fd842e70f5b28ff36fa41ba.mesh"
+
+[deps]
+
+files=["res://.godot/imported/arrow-basic.obj-35f909436fd842e70f5b28ff36fa41ba.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/arrow-basic.obj"
+dest_files=["res://.godot/imported/arrow-basic.obj-35f909436fd842e70f5b28ff36fa41ba.mesh", "res://.godot/imported/arrow-basic.obj-35f909436fd842e70f5b28ff36fa41ba.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

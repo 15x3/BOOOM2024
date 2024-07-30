@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dbh5uh17gxiu8"
+path="res://.godot/imported/structure-high.obj-ca039b0c3680f61eb3450954374bebdc.mesh"
+
+[deps]
+
+files=["res://.godot/imported/structure-high.obj-ca039b0c3680f61eb3450954374bebdc.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/structure-high.obj"
+dest_files=["res://.godot/imported/structure-high.obj-ca039b0c3680f61eb3450954374bebdc.mesh", "res://.godot/imported/structure-high.obj-ca039b0c3680f61eb3450954374bebdc.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

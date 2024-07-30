@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://duo0fwsolkdbl"
+path="res://.godot/imported/door-wide-open.obj-4c070665abcdeb52f93e232aab7d1ebe.mesh"
+
+[deps]
+
+files=["res://.godot/imported/door-wide-open.obj-4c070665abcdeb52f93e232aab7d1ebe.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/door-wide-open.obj"
+dest_files=["res://.godot/imported/door-wide-open.obj-4c070665abcdeb52f93e232aab7d1ebe.mesh", "res://.godot/imported/door-wide-open.obj-4c070665abcdeb52f93e232aab7d1ebe.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

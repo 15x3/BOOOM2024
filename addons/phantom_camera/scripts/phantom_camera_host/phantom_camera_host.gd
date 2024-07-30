@@ -254,7 +254,7 @@ func _assign_new_active_pcam(pcam: Node) -> void:
 		_active_pcam_2d.set_is_active(self, true)
 		_active_pcam_2d.became_active.emit()
 		_camera_zoom = camera_2d.get_zoom()
-		## TODO - Needs 3D variant once Godot supports physics_interpolation for 3D scenes.
+		
 		var _physics_based: bool
 
 		## NOTE - Only supported in Godot 4.3 or above
@@ -274,7 +274,7 @@ func _assign_new_active_pcam(pcam: Node) -> void:
 			if _physics_based:
 				_follow_target_physics_based = true
 				_active_pcam_2d.set_follow_target_physics_based(true, self)
-				## TODO - Temporary solution to support Godot 4.2
+		
 				## Remove line below and uncomment the following once Godot 4.3 is min verison.
 				camera_2d.call("reset_physics_interpolation")
 				camera_2d.set("physics_interpolation_mode", 1)
@@ -283,7 +283,7 @@ func _assign_new_active_pcam(pcam: Node) -> void:
 			else:
 				_follow_target_physics_based = false
 				_active_pcam_2d.set_follow_target_physics_based(false, self)
-				## TODO - Temporary solution to support Godot 4.2
+		
 				## Remove line below and uncomment the following once Godot 4.3 is min verison.
 				camera_2d.set("physics_interpolation_mode", 2)
 				#camera_2d.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
@@ -363,7 +363,7 @@ func _pcam_follow(delta: float) -> void:
 		_show_viewfinder_in_play()
 		_viewfinder_needed_check = false
 
-	# TODO - Should be able to find a more efficient way using signals
+	
 	if Engine.is_editor_hint():
 		if not _is_2D:
 			if _active_pcam_3d.get_camera_3d_resource():

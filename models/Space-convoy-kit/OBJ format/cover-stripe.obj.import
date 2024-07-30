@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dktv452jtma4l"
+path="res://.godot/imported/cover-stripe.obj-3b77cdcc92966037c317ca3e874253fe.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cover-stripe.obj-3b77cdcc92966037c317ca3e874253fe.mesh"]
+
+source_file="res://models/Space-convoy-kit/OBJ format/cover-stripe.obj"
+dest_files=["res://.godot/imported/cover-stripe.obj-3b77cdcc92966037c317ca3e874253fe.mesh", "res://.godot/imported/cover-stripe.obj-3b77cdcc92966037c317ca3e874253fe.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
