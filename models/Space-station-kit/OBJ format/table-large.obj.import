@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bphiyj68b3l0o"
+path="res://.godot/imported/table-large.obj-3c43d915644755c17ec7c46e0d0ff06a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/table-large.obj-3c43d915644755c17ec7c46e0d0ff06a.mesh"]
+
+source_file="res://models/Space-station-kit/OBJ format/table-large.obj"
+dest_files=["res://.godot/imported/table-large.obj-3c43d915644755c17ec7c46e0d0ff06a.mesh", "res://.godot/imported/table-large.obj-3c43d915644755c17ec7c46e0d0ff06a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

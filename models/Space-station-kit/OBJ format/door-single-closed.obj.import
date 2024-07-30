@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cugsxw3onqefe"
+path="res://.godot/imported/door-single-closed.obj-ed9bfa00a617939b718e06a6cc8c2ddd.mesh"
+
+[deps]
+
+files=["res://.godot/imported/door-single-closed.obj-ed9bfa00a617939b718e06a6cc8c2ddd.mesh"]
+
+source_file="res://models/Space-station-kit/OBJ format/door-single-closed.obj"
+dest_files=["res://.godot/imported/door-single-closed.obj-ed9bfa00a617939b718e06a6cc8c2ddd.mesh", "res://.godot/imported/door-single-closed.obj-ed9bfa00a617939b718e06a6cc8c2ddd.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

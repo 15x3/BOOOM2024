@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dsth513r48ap4"
+path="res://.godot/imported/balcony-floor-center.obj-32381e90a829a059e3ca4c1fe2dddcdb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/balcony-floor-center.obj-32381e90a829a059e3ca4c1fe2dddcdb.mesh"]
+
+source_file="res://models/Space-station-kit/OBJ format/balcony-floor-center.obj"
+dest_files=["res://.godot/imported/balcony-floor-center.obj-32381e90a829a059e3ca4c1fe2dddcdb.mesh", "res://.godot/imported/balcony-floor-center.obj-32381e90a829a059e3ca4c1fe2dddcdb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

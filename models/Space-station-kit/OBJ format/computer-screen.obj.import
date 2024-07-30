@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://buor4tjn1betf"
+path="res://.godot/imported/computer-screen.obj-09da74fcf9ff9a4051a67f7f23c42b7a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/computer-screen.obj-09da74fcf9ff9a4051a67f7f23c42b7a.mesh"]
+
+source_file="res://models/Space-station-kit/OBJ format/computer-screen.obj"
+dest_files=["res://.godot/imported/computer-screen.obj-09da74fcf9ff9a4051a67f7f23c42b7a.mesh", "res://.godot/imported/computer-screen.obj-09da74fcf9ff9a4051a67f7f23c42b7a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

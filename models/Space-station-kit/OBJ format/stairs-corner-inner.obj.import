@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bdshkda76q6gp"
+path="res://.godot/imported/stairs-corner-inner.obj-cb05c0215d60298257d01bf4c34b7810.mesh"
+
+[deps]
+
+files=["res://.godot/imported/stairs-corner-inner.obj-cb05c0215d60298257d01bf4c34b7810.mesh"]
+
+source_file="res://models/Space-station-kit/OBJ format/stairs-corner-inner.obj"
+dest_files=["res://.godot/imported/stairs-corner-inner.obj-cb05c0215d60298257d01bf4c34b7810.mesh", "res://.godot/imported/stairs-corner-inner.obj-cb05c0215d60298257d01bf4c34b7810.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

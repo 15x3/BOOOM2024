@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://bqgdub07uk1bj"]
+
+[ext_resource type="Script" path="res://scripts/NPCexample.gd" id="1_ujnva"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eunay"]
+[ext_resource type="Resource" uid="uid://cptfoggk2ok67" path="res://addons/phantom_camera/examples/resources/tween/player_phantom_camera_3d_tween.tres" id="3_djapg"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="4_e05ky"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lo3bi"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pg45y"]
+
+[sub_resource type="Resource" id="Resource_xmsd6"]
+script = ExtResource("4_e05ky")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_as7i7"]
+size = Vector3(3.02332, 0.319824, 1.71436)
+
+[node name="StaticBody3D" type="StaticBody3D" node_paths=PackedStringArray("npc_pcam", "dialogueArea", "dialogueLabel3D")]
+script = ExtResource("1_ujnva")
+npc_pcam = NodePath("PhantomCamera3D")
+dialogueArea = NodePath("DialogueTriggerZone")
+dialogueLabel3D = NodePath("Label3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_lo3bi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_pg45y")
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52371, 2.71923)
+script = ExtResource("2_eunay")
+tween_resource = ExtResource("3_djapg")
+camera_3d_resource = SubResource("Resource_xmsd6")
+
+[node name="DialogueTriggerZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.736743, 1.67524)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DialogueTriggerZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00406182, 0.0841759, -0.357178)
+shape = SubResource("BoxShape3D_as7i7")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1804, 0.0120893)
+text = "Press F to pay respect"
