@@ -94,47 +94,6 @@ offset_top = 12.0
 offset_right = 1267.0
 offset_bottom = 53.0
 
-[node name="CardPositiveWeightBar" type="ProgressBar" parent="HUD"]
-offset_left = 1217.0
-offset_top = 147.0
-offset_right = 1256.0
-offset_bottom = 570.0
-fill_mode = 3
-
-[node name="CardSpecialWeightBar" type="ProgressBar" parent="HUD"]
-offset_left = 1163.0
-offset_top = 147.0
-offset_right = 1202.0
-offset_bottom = 570.0
-fill_mode = 3
-
-[node name="CardDetails1" type="RichTextLabel" parent="HUD"]
-offset_left = 12.0
-offset_top = 113.0
-offset_right = 210.0
-offset_bottom = 185.0
-text = "1 号卡槽
-这里是强化内容
-嗯"
-
-[node name="CardDetails2" type="RichTextLabel" parent="HUD"]
-offset_left = 12.0
-offset_top = 199.0
-offset_right = 210.0
-offset_bottom = 274.0
-text = "2 号卡槽
-这里是强化内容
-嗯"
-
-[node name="CardDetails3" type="RichTextLabel" parent="HUD"]
-offset_left = 11.0
-offset_top = 283.0
-offset_right = 209.0
-offset_bottom = 366.0
-text = "3 号卡槽
-这里是强化内容
-嗯"
-
 [node name="Enemies" type="Node" parent="."]
 
 [node name="enemy-flying" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("7_bkjnm")]
@@ -206,8 +165,6 @@ player = NodePath("../../Player")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25368, 1.85491, 1.74138)
 
-[connection signal="cardroll_ordered" from="Player" to="." method="_on_player_cardroll_ordered"]
 [connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
 [connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]
 [connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]
-[connection signal="weight_change_ordered" from="Player" to="." method="_on_player_weight_change_ordered"]

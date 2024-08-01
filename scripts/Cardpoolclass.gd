@@ -1,7 +1,7 @@
 extends Node
 
 class_name CardPool
-
+	
 enum CardType {
 	NEGATIVE,
 	POSITIVE,

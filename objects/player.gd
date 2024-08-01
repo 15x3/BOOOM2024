@@ -45,6 +45,9 @@ var press_timer = 0.0
 signal health_updated
 signal death_reloaded
 signal scene_filp_ordered
+signal cardroll_ordered
+signal card_choose_ordered
+signal weight_change_ordered
 
 @onready var camera = $Head/Camera
 @onready var raycast = $Head/Camera/RayCast
@@ -201,8 +204,18 @@ func handle_controls(_delta):
 		Global.IS_IT_MIAMI = not Global.IS_IT_MIAMI
 		print("MIAMI TIME TRIGGERED")
 		# RE - 目前使用shift来主动触发,但是后续必须改成不能在游戏中主动触发(或者触发有条件)
+	# RANDOM - 抽卡动作:
+	if Input.is_action_just_pressed("start_cardroll") and Global.IS_RANDOM_TRIGGERED:
+		emit_signal("cardroll_ordered")
+		print("开始一轮抽卡")
 	
-
+	if Input.is_action_just_pressed("choose_card") and Global.IS_RANDOM_TRIGGERED:
+		emit_signal("card_choose_ordered")
+		print("按下选卡按钮")
+		
+	if Input.is_action_just_pressed("set_draw_weight") and Global.IS_RANDOM_TRIGGERED:
+		emit_signal("weight_change_ordered")
+	
 # Handle gravity
 
 func handle_gravity(delta):
