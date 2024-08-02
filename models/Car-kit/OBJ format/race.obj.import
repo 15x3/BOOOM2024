@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b0oeqr8vsl4hp"
+path="res://.godot/imported/race.obj-65afef2f3a582bc27fa3b003dba45b85.mesh"
+
+[deps]
+
+files=["res://.godot/imported/race.obj-65afef2f3a582bc27fa3b003dba45b85.mesh"]
+
+source_file="res://models/Car-kit/OBJ format/race.obj"
+dest_files=["res://.godot/imported/race.obj-65afef2f3a582bc27fa3b003dba45b85.mesh", "res://.godot/imported/race.obj-65afef2f3a582bc27fa3b003dba45b85.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

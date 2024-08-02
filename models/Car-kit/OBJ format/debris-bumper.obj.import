@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://2pcxxuy3o4e7"
+path="res://.godot/imported/debris-bumper.obj-89500368e44f6cdfafb8d7f6a3f4c622.mesh"
+
+[deps]
+
+files=["res://.godot/imported/debris-bumper.obj-89500368e44f6cdfafb8d7f6a3f4c622.mesh"]
+
+source_file="res://models/Car-kit/OBJ format/debris-bumper.obj"
+dest_files=["res://.godot/imported/debris-bumper.obj-89500368e44f6cdfafb8d7f6a3f4c622.mesh", "res://.godot/imported/debris-bumper.obj-89500368e44f6cdfafb8d7f6a3f4c622.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

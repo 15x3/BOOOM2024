@@ -249,6 +249,8 @@ locale/translations_pot_files=PackedStringArray("res://dialogue/example.dialogue
 
 [layer_names]
 
+3d_physics/layer_1="物理碰撞层"
+3d_physics/layer_2="逻辑处理层"
 3d_physics/layer_5="对话层触发"
 
 [rendering]

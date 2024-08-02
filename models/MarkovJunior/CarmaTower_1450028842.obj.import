@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ov2hp5pv1ni0"
+path="res://.godot/imported/CarmaTower_1450028842.obj-633eb18805c81acd40ac715429523473.mesh"
+
+[deps]
+
+files=["res://.godot/imported/CarmaTower_1450028842.obj-633eb18805c81acd40ac715429523473.mesh"]
+
+source_file="res://models/MarkovJunior/CarmaTower_1450028842.obj"
+dest_files=["res://.godot/imported/CarmaTower_1450028842.obj-633eb18805c81acd40ac715429523473.mesh", "res://.godot/imported/CarmaTower_1450028842.obj-633eb18805c81acd40ac715429523473.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

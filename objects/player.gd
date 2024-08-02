@@ -48,6 +48,7 @@ signal scene_filp_ordered
 signal cardroll_ordered
 signal card_choose_ordered
 signal weight_change_ordered
+signal game_over
 
 @onready var camera = $Head/Camera
 @onready var raycast = $Head/Camera/RayCast
@@ -386,3 +387,10 @@ func reset_press_state():
 	is_waiting_for_second_press = false
 	press_timer = 0.0
 	timer_bar.visible = false
+
+
+func _on_game_over_area_body_entered(body: Node3D) -> void:
+	# 检查进入的物体是否是玩家
+	if body.name == "Player":  # 假设玩家节点的名称为 "Player"
+		emit_signal("game_over")  # 发出游戏结束信号
+		print("Game Over!")  # 你可以在这里调用其他游戏结束逻辑

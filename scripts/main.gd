@@ -33,6 +33,16 @@ func _ready() -> void:
 	enemies_node = get_node("Enemies")
 	initialize_card_pool()
 	
+	# RE - 重启时的四次选择
+	if Global.RESET_BY_GAME_OVER >= 1:
+		pass
+	if Global.RESET_BY_GAME_OVER >= 2:
+		pass
+	if Global.RESET_BY_GAME_OVER >= 3:
+		pass
+	if Global.RESET_BY_GAME_OVER >= 4:
+		pass
+	
 func _on_player_death_reloaded() -> void:
 	Global.DEATH_TIMES += 1 
 	get_tree().reload_current_scene()
@@ -55,8 +65,6 @@ func _on_player_cardroll_ordered() -> void:
 func flip_levels():
 	# 遍历 Levels 节点下的所有 GridMap 子节点
 	for child in levels_node.get_children():
-		if child is GridMap:
-			# 翻转 GridMap 的 Y 轴
 			child.transform.basis = Basis(Vector3(1, 0, 0), PI) * child.transform.basis
 
 func initialize_card_pool():
@@ -149,3 +157,11 @@ func get_card_info(card_id: int) -> Dictionary:
 
 func _on_player_weight_change_ordered() -> void:
 	set_positive_weight()
+
+
+func _on_player_game_over() -> void:
+	Global.RESET_BY_GAME_OVER += 1
+	call_deferred("_reload_scene")
+
+func _reload_scene() -> void:
+	get_tree().reload_current_scene()
