@@ -49,6 +49,7 @@ signal cardroll_ordered
 signal card_choose_ordered
 signal weight_change_ordered
 signal game_over
+signal shift_pressed
 
 @onready var camera = $Head/Camera
 @onready var raycast = $Head/Camera/RayCast
@@ -202,8 +203,9 @@ func handle_controls(_delta):
 
 	
 	if Input.is_action_just_pressed("shift"):
-		Global.IS_IT_MIAMI = not Global.IS_IT_MIAMI
-		print("MIAMI TIME TRIGGERED")
+		#Global.IS_IT_MIAMI = not Global.IS_IT_MIAMI
+		emit_signal("shift_pressed")
+		
 		# RE - 目前使用shift来主动触发,但是后续必须改成不能在游戏中主动触发(或者触发有条件)
 	# RANDOM - 抽卡动作:
 	if Input.is_action_just_pressed("start_cardroll") and Global.IS_RANDOM_TRIGGERED:

@@ -16,6 +16,7 @@ var positive_weight = 0.5 # 抽中正面卡的权重
 var special_weight = 1.0 - positive_weight # 抽中正面卡时抽中强化卡的权重
 @onready var positive_weight_bar = $HUD/CardPositiveWeightBar
 @onready var special_weight_bar = $HUD/CardSpecialWeightBar
+@export var enemy_scene : PackedScene
 
 # 初始化卡池
 var cards: Array = []
@@ -165,3 +166,11 @@ func _on_player_game_over() -> void:
 
 func _reload_scene() -> void:
 	get_tree().reload_current_scene()
+
+func _on_enemy_timer_timeout() -> void:
+	var enemy = enemy_scene.instantiate()
+	var enemy_spawn_location = get_node("SpawnPath/PathFollow3D")
+	enemy_spawn_location.progress_ratio = randf()
+	var player_position = $Player.position
+	enemy.spawn_and_chase()
+	get_node("Enemies").add_child(enemy)

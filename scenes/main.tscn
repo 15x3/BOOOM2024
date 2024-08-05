@@ -1,14 +1,36 @@
-[gd_scene load_steps=13 format=3 uid="uid://fo7h71f3j727"]
+[gd_scene load_steps=17 format=3 uid="uid://fo7h71f3j727"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqkch"]
-[ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_elriq"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_s8mkj"]
 [ext_resource type="FontFile" uid="uid://biqtga8moh7ah" path="res://fonts/lilita_one_regular.ttf" id="3_w27de"]
 [ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="4_6d54a"]
-[ext_resource type="Shader" path="res://shaders/ColorRectDitherTest.gdshader" id="5_qd2c4"]
+[ext_resource type="Theme" uid="uid://cyg1er5tn6vi8" path="res://ui/theme_kenneys.tres" id="6_1fiqt"]
+[ext_resource type="Material" uid="uid://brhp4urdiiyam" path="res://shaders/pixel_shader.tres" id="6_ehviv"]
+[ext_resource type="Script" path="res://scenes/color_rect.gd" id="7_6hfbi"]
 [ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://objects/enemy.tscn" id="8_7ty2f"]
 [ext_resource type="PackedScene" uid="uid://ccbffi713mhqq" path="res://scenes/Level.tscn" id="9_mxv00"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uscoa"]
+sky_top_color = Color(0.211765, 0.313726, 0.552941, 1)
+sky_horizon_color = Color(0.545098, 0.686275, 0.811765, 1)
+sky_curve = 0.13
+ground_bottom_color = Color(0.545098, 0.686275, 0.811765, 1)
+ground_horizon_color = Color(0.545098, 0.686275, 0.811765, 1)
+
+[sub_resource type="Sky" id="Sky_yiioa"]
+sky_material = SubResource("ProceduralSkyMaterial_uscoa")
+
+[sub_resource type="Environment" id="Environment_acvlh"]
+background_mode = 2
+sky = SubResource("Sky_yiioa")
+ambient_light_source = 3
+ambient_light_color = Color(0.5, 0.5, 0.5, 1)
+ambient_light_sky_contribution = 0.3
+ambient_light_energy = 3.0
+reflected_light_source = 2
+tonemap_mode = 2
+tonemap_white = 5.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_fpmwk"]
 font = ExtResource("3_w27de")
@@ -16,27 +38,29 @@ font_size = 36
 outline_size = 12
 outline_color = Color(0, 0, 0, 0.470588)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fbso1"]
-shader = ExtResource("5_qd2c4")
-shader_parameter/quantize_size = 5.0
-shader_parameter/handle_scale = true
-shader_parameter/handle_subpixels = true
-shader_parameter/dither_enabled = true
-shader_parameter/bayer_pattern = 2.0
-shader_parameter/divisions = 5.0
-shader_parameter/contrast = 1.15
-shader_parameter/shift = 0.0
-shader_parameter/grayscale = null
-shader_parameter/use_palette = null
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxu7m"]
 size = Vector3(5.67444, 1, 7.492)
 
+[sub_resource type="Curve3D" id="Curve3D_k2g3o"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -31.423, 0, -24.6626, 0, 0, 0, 0, 0, 0, -31.9359, 0, 31.7549, 0, 0, 0, 0, 0, 0, 32.1749, 0, 32.2678, 0, 0, 0, 0, 0, 0, 31.662, 0, -24.3207, 0, 0, 0, 0, 0, 0, -31.423, 0, -24.6626),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_pqkch")
+enemy_scene = ExtResource("8_7ty2f")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("1_q8fpv")
+environment = SubResource("Environment_acvlh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.911663, -0.31204, -0.267398, -0.410311, -0.655256, -0.634259, 0.0227003, 0.687947, -0.725406, 1.64414, 29.4458, -46.8046)
+visible = false
+light_color = Color(0.6, 0.6, 0.6, 1)
+light_energy = 2.0
+sky_mode = 1
 
 [node name="Player" parent="." node_paths=PackedStringArray("crosshair") instance=ExtResource("2_elriq")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.399095, 4.34758, -40.1552)
@@ -44,6 +68,7 @@ crosshair = NodePath("../HUD/Crosshair")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.422618, -0.694272, 0.582563, 0, 0.642788, 0.766044, -0.906308, 0.323744, -0.271654, 0, 0, 0)
+light_energy = 0.5
 shadow_enabled = true
 shadow_opacity = 0.75
 
@@ -77,15 +102,6 @@ text = "100%"
 label_settings = SubResource("LabelSettings_fpmwk")
 vertical_alignment = 2
 
-[node name="ColorRect" type="ColorRect" parent="HUD"]
-visible = false
-material = SubResource("ShaderMaterial_fbso1")
-offset_left = 281.0
-offset_top = 140.0
-offset_right = 1000.0
-offset_bottom = 551.0
-color = Color(0, 0, 0, 1)
-
 [node name="ProgressBar" type="ProgressBar" parent="HUD"]
 offset_left = 884.0
 offset_top = 12.0
@@ -97,6 +113,7 @@ offset_left = 1217.0
 offset_top = 147.0
 offset_right = 1256.0
 offset_bottom = 570.0
+theme = ExtResource("6_1fiqt")
 fill_mode = 3
 
 [node name="CardSpecialWeightBar" type="ProgressBar" parent="HUD"]
@@ -104,7 +121,17 @@ offset_left = 1163.0
 offset_top = 147.0
 offset_right = 1202.0
 offset_bottom = 570.0
+theme = ExtResource("6_1fiqt")
 fill_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="HUD"]
+material = ExtResource("6_ehviv")
+offset_left = -37.0
+offset_top = -28.0
+offset_right = 1326.0
+offset_bottom = 747.0
+color = Color(0, 0, 0, 1)
+script = ExtResource("7_6hfbi")
 
 [node name="CardDetails1" type="RichTextLabel" parent="HUD"]
 offset_left = 12.0
@@ -132,6 +159,14 @@ offset_bottom = 366.0
 text = "3 号卡槽
 这里是强化内容
 嗯"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HUD"]
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 287.0
+offset_bottom = 86.0
+bbcode_enabled = true
+text = "[shake rate=16 level=15][font size=40]剩余敌人：15[/font][/shake]"
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -167,10 +202,24 @@ collision_mask = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24823, 0, -0.396576)
 shape = SubResource("BoxShape3D_oxu7m")
 
+[node name="Enemy Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_k2g3o")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(-0.999959, 0, 0.00909045, 0, 1, 0, -0.00909045, 0, -0.999959, -31.423, 0, -24.6626)
+
 [connection signal="cardroll_ordered" from="Player" to="." method="_on_player_cardroll_ordered"]
 [connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
 [connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
 [connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]
 [connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]
+[connection signal="shift_pressed" from="Player" to="HUD" method="_on_player_shift_pressed"]
 [connection signal="weight_change_ordered" from="Player" to="." method="_on_player_weight_change_ordered"]
+[connection signal="spawn_or_destroyed" from="Enemies/enemy-flying" to="HUD" method="_on_enemyflying_spawn_or_destroyed"]
 [connection signal="body_entered" from="Level/GameOverArea" to="Player" method="_on_game_over_area_body_entered"]
+[connection signal="timeout" from="Enemy Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Enemy Timer" to="." method="_on_enemy_timer_timeout"]

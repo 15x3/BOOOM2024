@@ -1,0 +1,39 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://cyg1er5tn6vi8"]
+
+[ext_resource type="Texture2D" uid="uid://cotx1i50knu0e" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_square_gradient.png" id="1_bruvr"]
+[ext_resource type="Texture2D" uid="uid://cuwv1kjj4yvyd" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_square_depth_flat.png" id="2_p62rx"]
+[ext_resource type="Texture2D" uid="uid://2oehb0tq8iaj" path="res://ui/kenney_ui-pack/PNG/Green/Default/button_rectangle_gradient.png" id="3_vke5t"]
+[ext_resource type="Texture2D" uid="uid://5e5wvtgxuvi1" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_square_gloss.png" id="4_as2pn"]
+[ext_resource type="FontFile" uid="uid://cswljfl3f0153" path="res://ui/kenney_ui-pack/Font/Kenney Future.ttf" id="5_hb8kf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7sw1h"]
+texture = ExtResource("1_bruvr")
+texture_margin_left = 6.0
+texture_margin_right = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k3h66"]
+texture = ExtResource("2_p62rx")
+texture_margin_left = 11.0
+texture_margin_right = 11.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k5mso"]
+texture = ExtResource("3_vke5t")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nouhu"]
+texture = ExtResource("4_as2pn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o1pkw"]
+texture = ExtResource("4_as2pn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsqx8"]
+texture = ExtResource("4_as2pn")
+
+[resource]
+default_font = ExtResource("5_hb8kf")
+default_font_size = 0
+Label/styles/normal = SubResource("StyleBoxTexture_7sw1h")
+ProgressBar/styles/background = SubResource("StyleBoxTexture_k3h66")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_k5mso")
+TextEdit/styles/focus = SubResource("StyleBoxTexture_nouhu")
+TextEdit/styles/normal = SubResource("StyleBoxTexture_o1pkw")
+TextEdit/styles/read_only = SubResource("StyleBoxTexture_xsqx8")
