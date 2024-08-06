@@ -5,6 +5,7 @@ extends Node3D
 @onready var raycast = $RayCast
 @onready var muzzle_a = $MuzzleA
 @onready var muzzle_b = $MuzzleB
+@onready var navigation_agent = $NavigationAgent3D
 
 var health := 100
 var time := 0.0
@@ -18,7 +19,9 @@ signal spawn_or_destroyed
 # When ready, save the initial position
 
 
+
 func _ready():
+	player = $"../../Player"
 	target_position = position
 	if Global.IS_IT_MIAMI:
 		health = 1
@@ -28,13 +31,22 @@ func _ready():
 	emit_signal("spawn_or_destroyed")
 
 func _process(delta):
-	self.look_at(player.position + Vector3(0, 0.5, 0), Vector3.UP, true)  # Look at player
-	target_position.y += (cos(time * 5) * 1) * delta  # Sine movement (up and down)
+	# Look at player
+	self.look_at(player.position + Vector3(0, 0.5, 0), Vector3.UP, true)
 
+	# Sine movement (up and down)
+	target_position.y += (cos(time * 5) * 1) * delta
 	time += delta
 
-	position = target_position
+	# Update target position for NavigationAgent3D
+	navigation_agent.set_target_position(player.position)
 
+	# Move towards target using NavigationAgent3D
+	var direction = (navigation_agent.get_next_path_position() - global_transform.origin).normalized()
+	var velocity = direction * min_speed * delta
+	translate(velocity)
+
+	position = target_position
 
 # Take damage from player
 
@@ -84,19 +96,19 @@ func _on_timer_timeout():
 
 			collider.damage(5)  # Apply damage to player
 			
-func spawn_and_chase(start_position, player_position):
-	# We position the mob by placing it at start_position
-	# and rotate it towards player_position, so it looks at the player.
-	look_at_from_position(start_position, player_position, Vector3.UP)
-	# Rotate this mob randomly within range of -45 and +45 degrees,
-	# so that it doesn't move directly towards the player.
-	rotate_y(randf_range(-PI / 4, PI / 4))
-
-	# We calculate a random speed (integer)
-	var random_speed = randi_range(min_speed, max_speed)
-	# We calculate a forward velocity that represents the speed.
-	velocity = Vector3.FORWARD * random_speed
-	# We then rotate the velocity vector based on the mob's Y rotation
-	# in order to move in the direction the mob is looking.
-	velocity = velocity.rotated(Vector3.UP, rotation.y)
-	pass
+#func spawn_and_chase(start_position, player_position):
+	## We position the mob by placing it at start_position
+	## and rotate it towards player_position, so it looks at the player.
+	#look_at_from_position(start_position, player_position, Vector3.UP)
+	## Rotate this mob randomly within range of -45 and +45 degrees,
+	## so that it doesn't move directly towards the player.
+	#rotate_y(randf_range(-PI / 4, PI / 4))
+#
+	## We calculate a random speed (integer)
+	#var random_speed = randi_range(min_speed, max_speed)
+	## We calculate a forward velocity that represents the speed.
+	#velocity = Vector3.FORWARD * random_speed
+	## We then rotate the velocity vector based on the mob's Y rotation
+	## in order to move in the direction the mob is looking.
+	#velocity = velocity.rotated(Vector3.UP, rotation.y)
+	#pass

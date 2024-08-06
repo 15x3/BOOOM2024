@@ -16,7 +16,9 @@ var positive_weight = 0.5 # 抽中正面卡的权重
 var special_weight = 1.0 - positive_weight # 抽中正面卡时抽中强化卡的权重
 @onready var positive_weight_bar = $HUD/CardPositiveWeightBar
 @onready var special_weight_bar = $HUD/CardSpecialWeightBar
+@onready var pixelshader : ShaderMaterial = preload("res://shaders/pixel_shader.tres")
 @export var enemy_scene : PackedScene
+
 
 # 初始化卡池
 var cards: Array = []
@@ -65,8 +67,15 @@ func _on_player_cardroll_ordered() -> void:
 
 func flip_levels():
 	# 遍历 Levels 节点下的所有 GridMap 子节点
+	for i in range(1,10):
+		pixelshader.set_shader_parameter("quantize_size",i)
+		await get_tree().create_timer(0.05).timeout 
 	for child in levels_node.get_children():
 			child.transform.basis = Basis(Vector3(1, 0, 0), PI) * child.transform.basis
+	for i in range(10,1,-1):	
+		pixelshader.set_shader_parameter("quantize_size",i)
+		await get_tree().create_timer(0.05).timeout 
+
 
 func initialize_card_pool():
 	cards.clear()

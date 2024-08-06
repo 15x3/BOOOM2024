@@ -17,6 +17,6 @@ dest_files=["res://.godot/imported/roadTile_247.obj-73ebd5a081a1037953025f86dc90
 
 generate_tangents=true
 scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
+offset_mesh=Vector3(-1.5, 0, 1.5)
 optimize_mesh=true
 force_disable_mesh_compression=false

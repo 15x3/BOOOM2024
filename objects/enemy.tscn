@@ -33,4 +33,9 @@ frame = 2
 wait_time = 0.25
 autostart = true
 
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+simplify_path = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

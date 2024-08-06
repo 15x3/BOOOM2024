@@ -69,7 +69,6 @@ func _ready():
 	timer_bar.min_value = 0
 	timer_bar.max_value = DOUBLE_PRESS_THRESHOLD
 	timer_bar.value = 0
-	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	weapon = weapons[weapon_index] # Weapon must never be nil
@@ -123,8 +122,8 @@ func _physics_process(delta):
 		previously_floored = is_on_floor()
 
 		# Falling/respawning
-		if position.y < -15 or position.y > 15:
-			get_tree().reload_current_scene()
+		#if position.y < -15 or position.y > 15:
+			#get_tree().reload_current_scene()
 
 # Mouse movement
 
