@@ -304,7 +304,7 @@ void calculate_initial_physical_params(inout PhysicalParameters params, inout ui
 void calculate_initial_dynamics_params(inout DynamicsParameters params,inout uint alt_seed){
 	// -------------------- DO NOT REODER OPERATIONS, IT BREAKS VISUAL COMPATIBILITY
 	// -------------------- ADD NEW OPERATIONS AT THE BOTTOM
-	
+
 	float pi = 3.14159;
 	float degree_to_rad = pi / 180.0;
 	// calculate angle
@@ -322,22 +322,22 @@ void calculate_initial_dynamics_params(inout DynamicsParameters params,inout uin
 void calculate_initial_display_params(inout DisplayParameters params,inout uint alt_seed){
 	// -------------------- DO NOT REODER OPERATIONS, IT BREAKS VISUAL COMPATIBILITY
 	// -------------------- ADD NEW OPERATIONS AT THE BOTTOM
-	
+
 	// NOTE: this can, one day, be extended to support emitter lifetime.
 	//velocity, color, etc. can also be sampled with an extra step with curves over emitter life.
 	// this would add an extra sample step, because we'd want to sample at the moment where the particle
 	// was emitted. dynamic control of that is not allowed (we'd have to use tons of userdata to support it)
-	
+
 	float pi = 3.14159;
 	float degree_to_rad = pi / 180.0;
-	
+
 	// calculate scale
 	params.scale = vec3(mix(scale_min, scale_max, rand_from_seed(alt_seed)));
 	params.scale = sign(params.scale) * max(abs(params.scale), 0.001);
-	
+
 	// calculate hue variation
 	params.hue_rotation =  pi * 2.0 * mix(hue_variation_min, hue_variation_max, rand_from_seed(alt_seed));
-	
+
 	// particle animation
 	params.animation_speed = mix(anim_speed_min, anim_speed_max, rand_from_seed(alt_seed));
 	params.animation_offset = mix(anim_offset_min, anim_offset_max, rand_from_seed(alt_seed)) ;
@@ -376,7 +376,7 @@ vec3 calculate_initial_position(inout uint alt_seed) {
 		pos = texelFetch(emission_texture_points, emission_tex_ofs, 0).xyz;
 	}
 	if (emission_shape_index == 6){
-		
+
 		float ring_spawn_angle = rand_from_seed(alt_seed) * 2.0 * pi;
 		float ring_random_radius = rand_from_seed(alt_seed) * (emission_ring_radius - emission_ring_inner_radius) + emission_ring_inner_radius;
 		vec3 axis = normalize(emission_ring_axis);
@@ -470,7 +470,7 @@ vec3 process_radial_displacement(DynamicsParameters param, float lifetime, inout
 		radial_displacement = normalize(radial_displacement) * min(length(radial_displacement), length(global_velocity_pivot - transform[3].xyz));
 		}
 	}
-	
+
 	return radial_displacement;
 }
 
@@ -547,7 +547,7 @@ void process_physical_parameters(inout PhysicalParameters params, float lifetime
 	params.radial_accel *= texture(radial_accel_texture, vec2(lifetime_percent)).r;
 	params.tangent_accel *= texture(tangent_accel_texture, vec2(lifetime_percent)).r;
 	params.damping *= texture(damping_texture, vec2(lifetime_percent)).r;
-	
+
 }
 
 void start() {
@@ -561,11 +561,11 @@ void start() {
 	calculate_initial_dynamics_params(dynamic_params, alt_seed);
 	PhysicalParameters physics_params;
 	calculate_initial_physical_params(physics_params, alt_seed);
-	
+
 	float initial_turbulence_displacement = mix(turbulence_initial_displacement_min, turbulence_initial_displacement_max, rand_from_seed(alt_seed));
 	float pi = 3.14159;
 	float degree_to_rad = pi / 180.0;
-	
+
 	if (RESTART_CUSTOM){
 		CUSTOM = vec4(0.);
 		CUSTOM.w = params.lifetime;
@@ -613,7 +613,7 @@ void start() {
 	if (RESTART_VELOCITY) {
 		VELOCITY = process_linear_velocity(dynamic_params, alt_seed);
 		}
-	
+
 	process_display_param(params, 0.);
 //	process_dynamic_parameters(dynamic_params, 0., alt_seed, TRANSFORM, EMISSION_TRANSFORM, DELTA);
 	VELOCITY = (EMISSION_TRANSFORM * vec4(VELOCITY, 0.0)).xyz;
@@ -639,23 +639,23 @@ void process() {
 	if (CUSTOM.y > CUSTOM.w) {
 		ACTIVE = false;
 	}
-	
-	
+
+
 	// will use this later to calculate final displacement and orient the particle.
 	vec3 starting_position = TRANSFORM[3].xyz;
 	vec3 controlled_displacement;
 	// FIXME use instance uniform!!!!!
 	controlled_displacement += (EMISSION_TRANSFORM[3].xyz - USERDATA1.xyz) * inherit_emitter_velocity_percent;
-	
+
 //	VELOCITY += process_physics_parameters(dynamic_params, lifetime_percent, alt_seed, TRANSFORM, EMISSION_TRANSFORM, DELTA);
-	
+
 	controlled_displacement += process_orbit_displacement(dynamic_params, lifetime_percent, alt_seed, TRANSFORM, EMISSION_TRANSFORM, DELTA, params.lifetime * LIFETIME);
 	// calculate all velocity
-	
+
 	controlled_displacement += process_radial_displacement(dynamic_params, lifetime_percent, alt_seed, TRANSFORM, EMISSION_TRANSFORM, DELTA);
-	
+
 	controlled_displacement += process_directional_displacement(dynamic_params, lifetime_percent, TRANSFORM, EMISSION_TRANSFORM, DELTA);
-	
+
 	process_physical_parameters(physics_params, lifetime_percent);
 	vec3 force;
 	{
@@ -689,31 +689,31 @@ void process() {
 				VELOCITY = normalize(VELOCITY) * v;
 			}
 		}
-		
+
 	}
-	
+
 	vec3 final_velocity = controlled_displacement + VELOCITY;
-	
+
 	// turbulence before limiting
 	if (turbulence_influence_max > 0.0){
 		float turbulence_influence = textureLod(turbulence_influence_over_life, vec2(lifetime_randomness, 0.0), 0.0).r;
-		
+
 		vec3 noise_direction = get_noise_direction(TRANSFORM[3].xyz);
 		if (!COLLIDED) {
-			
+
 			float vel_mag = length(final_velocity);
 			float vel_infl = clamp(mix(turbulence_influence_min, turbulence_influence_max, rand_from_seed(alt_seed)) * turbulence_influence, 0.0, 1.0);
 			final_velocity = mix(final_velocity, normalize(noise_direction) * vel_mag * (1.0 + (1.0 - vel_infl) * 0.2), vel_infl);
 		}
 	}
-	
+
 	// limit velocity
 	if (length(final_velocity)> 0.001 && velocity_limit){
 		final_velocity = normalize(final_velocity) * min(abs(length(final_velocity)), abs(velocity_limit_multiplier * texture(velocity_limit_curve, vec2(lifetime_percent)).r));
 	}
-	
+
 	TRANSFORM[3].xyz += final_velocity * DELTA;
-	
+
 	if (align_y){
 		if (length(final_velocity) > 0.0) {
 			TRANSFORM[1].xyz = normalize(final_velocity);
@@ -728,9 +728,9 @@ void process() {
 			TRANSFORM[0].xyz = normalize(cross(normalize(TRANSFORM[1].xyz), normalize(TRANSFORM[2].xyz)));
 		}
 	}
-	
+
 	process_display_param(params, lifetime_percent);
-	
+
 	// if scale over velocity
 	if(length(final_velocity)> 0.001){
 		params.scale *= texture(scale_over_velocity_curve, vec2(clamp(length(final_velocity)/(scale_over_velocity_range.y - scale_over_velocity_range.x), 0.0,1.0), 0.0)).rgb;
@@ -743,17 +743,17 @@ void process() {
 	TRANSFORM[0].xyz *= sign(params.scale.x) * max(abs(params.scale.x), 0.001);
 	TRANSFORM[1].xyz *= sign(params.scale.y) * max(abs(params.scale.y), 0.001);
 	TRANSFORM[2].xyz *= sign(params.scale.z) * max(abs(params.scale.z), 0.001);
-	
+
 	// angle
 	float base_angle = dynamic_params.angle;
 	base_angle += CUSTOM.y * LIFETIME * dynamic_params.angular_velocity;
 	CUSTOM.x = base_angle * degree_to_rad;
-	
-	// 
+
+	//
 	CUSTOM.z = params.animation_offset + lifetime_percent * params.animation_speed;
-	
+
 	COLOR = process_color(params, lifetime_percent);
-	
+
 	if (COLLIDED) {
 		if (length(VELOCITY) > 3.0) {
 			TRANSFORM[3].xyz += COLLISION_NORMAL * COLLISION_DEPTH;

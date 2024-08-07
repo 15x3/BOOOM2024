@@ -1,11 +1,12 @@
 extends Node3D
 
 @export var player: Node3D
+@export var character_speed := 10
 
 @onready var raycast = $RayCast
 @onready var muzzle_a = $MuzzleA
 @onready var muzzle_b = $MuzzleB
-@onready var navigation_agent = $NavigationAgent3D
+@onready var navigation_agent = $NavigationAgent3D as NavigationAgent3D
 
 var health := 100
 var time := 0.0
@@ -28,25 +29,25 @@ func _ready():
 		print("OH! MIAMI TIME!")
 	else: 
 		health = health * (10 - Global.DEATH_TIMES) / 10 #RE - 怪物血量跟随减少
-	emit_signal("spawn_or_destroyed")
+	spawn_or_destroyed.connect($"../../HUD"._on_enemy_spawn_or_destroyed.bind(1))
 
 func _process(delta):
 	# Look at player
+	var velocity = Vector3.ZERO
 	self.look_at(player.position + Vector3(0, 0.5, 0), Vector3.UP, true)
 
 	# Sine movement (up and down)
 	target_position.y += (cos(time * 5) * 1) * delta
 	time += delta
-
 	# Update target position for NavigationAgent3D
 	navigation_agent.set_target_position(player.position)
 
 	# Move towards target using NavigationAgent3D
-	var direction = (navigation_agent.get_next_path_position() - global_transform.origin).normalized()
-	var velocity = direction * min_speed * delta
-	translate(velocity)
-
-	position = target_position
+	#var direction = (navigation_agent.get_next_path_position() - global_transform.origin).normalized()
+	#velocity = direction * min_speed * delta
+	#translate(velocity)
+#
+	#position = target_position
 
 # Take damage from player
 
@@ -59,6 +60,12 @@ func damage(amount):
 	if health <= 0 and !destroyed:
 		destroy()
 
+func _physics_process(delta):
+	if navigation_agent.is_navigation_finished():
+		return
+	var next_position := navigation_agent.get_next_path_position()
+	var offset := next_position - global_position
+	global_position = global_position.move_toward(next_position, delta * character_speed)
 
 # Destroy the enemy when out of health
 

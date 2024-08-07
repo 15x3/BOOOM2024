@@ -11,6 +11,7 @@ const NEGATIVE_CARDS = 10
 const POSITIVE_CARDS = 7
 const POSITIVE_SPECIAL_CARDS = 3
 
+var enemy_left
 # 概率控制变量
 var positive_weight = 0.5 # 抽中正面卡的权重
 var special_weight = 1.0 - positive_weight # 抽中正面卡时抽中强化卡的权重
@@ -181,5 +182,10 @@ func _on_enemy_timer_timeout() -> void:
 	var enemy_spawn_location = get_node("SpawnPath/PathFollow3D")
 	enemy_spawn_location.progress_ratio = randf()
 	var player_position = $Player.position
-	enemy.spawn_and_chase()
+	enemy.global_transform.origin = enemy_spawn_location.position
 	get_node("Enemies").add_child(enemy)
+
+func _on_enemy_spawn_or_destroyed(num) -> void:
+	$HUD/EnemyLeft.clear()
+	enemy_left += num
+	$HUD/EnemyLeft.append_text("[shake rate=16 level=15][font size=40]剩余敌人："+str(enemy_left)+"[/font][/shake]")
