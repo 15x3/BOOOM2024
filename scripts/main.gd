@@ -10,8 +10,9 @@ const TOTAL_CARDS = 20
 const NEGATIVE_CARDS = 10
 const POSITIVE_CARDS = 7
 const POSITIVE_SPECIAL_CARDS = 3
+const PLAYER_START_POS : Vector3 = Vector3(0,2,37.841)
 
-var enemy_left
+#var enemy_left = 4
 # 概率控制变量
 var positive_weight = 0.5 # 抽中正面卡的权重
 var special_weight = 1.0 - positive_weight # 抽中正面卡时抽中强化卡的权重
@@ -30,13 +31,18 @@ var levels_node: Node
 var enemies_node: Node
 var cardpool = CardPool
 
+var current_wave = 1
+
+signal enemy_spawn_ordered
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print(Global.DEATH_TIMES)
 	levels_node = get_node("Level")
 	enemies_node = get_node("Enemies")
 	initialize_card_pool()
-	
+	$Player.global_position = PLAYER_START_POS
+	$AnimationPlayer.play("new_animation")
 	# RE - 重启时的四次选择
 	if Global.RESET_BY_GAME_OVER >= 1:
 		pass
@@ -46,6 +52,8 @@ func _ready() -> void:
 		pass
 	if Global.RESET_BY_GAME_OVER >= 4:
 		pass
+		
+	
 	
 func _on_player_death_reloaded() -> void:
 	Global.DEATH_TIMES += 1 
@@ -177,15 +185,31 @@ func _on_player_game_over() -> void:
 func _reload_scene() -> void:
 	get_tree().reload_current_scene()
 
-func _on_enemy_timer_timeout() -> void:
-	var enemy = enemy_scene.instantiate()
-	var enemy_spawn_location = get_node("SpawnPath/PathFollow3D")
-	enemy_spawn_location.progress_ratio = randf()
-	var player_position = $Player.position
-	enemy.global_transform.origin = enemy_spawn_location.position
-	get_node("Enemies").add_child(enemy)
+func spawn_enemies(num) -> void:
+	for i in num:
+		var enemy = enemy_scene.instantiate()
+		var enemy_spawn_location = get_node("SpawnPath/PathFollow3D")
+		enemy_spawn_location.progress_ratio = randf()
+		var player_position = $Player.position
+		enemy.global_transform.origin = enemy_spawn_location.position
+		get_node("Enemies").add_child(enemy)
+		#enemy_spawned.connect($HUD._on_enemy_spawn_or_destroyed.bind(1))
+		#get_tree().create_timer(0.05).timeout
 
-func _on_enemy_spawn_or_destroyed(num) -> void:
-	$HUD/EnemyLeft.clear()
-	enemy_left += num
-	$HUD/EnemyLeft.append_text("[shake rate=16 level=15][font size=40]剩余敌人："+str(enemy_left)+"[/font][/shake]")
+func _on_hud_wave_cleared() -> void:
+	Global.WAVES += 1
+	$HUD/WaveLeft.clear()
+	$HUD/WaveLeft.append_text("[font size=40]第 " + str(Global.WAVES) + " / 10 波次[/font]")
+	enemy_spawn_ordered.emit(5)
+	if current_wave == 2:
+		pass
+	elif current_wave == 3 or current_wave == 4 :
+		pass
+	elif current_wave == 5:
+		pass
+	elif current_wave >= 6 or current_wave == 7 or current_wave == 8:
+		pass
+	elif current_wave == 9:
+		pass
+	elif current_wave ==10:
+		pass

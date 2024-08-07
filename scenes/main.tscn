@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://fo7h71f3j727"]
+[gd_scene load_steps=25 format=3 uid="uid://fo7h71f3j727"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqkch"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_elriq"]
@@ -8,9 +8,12 @@
 [ext_resource type="Theme" uid="uid://cyg1er5tn6vi8" path="res://ui/theme_kenneys.tres" id="6_1fiqt"]
 [ext_resource type="Material" uid="uid://brhp4urdiiyam" path="res://shaders/pixel_shader.tres" id="6_ehviv"]
 [ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://objects/enemy.tscn" id="8_7ty2f"]
+[ext_resource type="Script" path="res://scripts/enemies.gd" id="9_4w057"]
 [ext_resource type="PackedScene" uid="uid://ccbffi713mhqq" path="res://scenes/Level.tscn" id="9_mxv00"]
+[ext_resource type="Texture2D" uid="uid://dx0xsdce7dd7" path="res://objects/Change mine Jam Theme.png" id="9_wliga"]
 [ext_resource type="MeshLibrary" uid="uid://d13yslh27k0b0" path="res://models/Road_tile_meshlib.tres" id="10_6o7ks"]
 [ext_resource type="ArrayMesh" uid="uid://m7ojnwbokvtp" path="res://models/Car-kit/OBJ format/police.obj" id="11_f6lx3"]
+[ext_resource type="PackedScene" uid="uid://c3rgxmaffte2k" path="res://scenes/trigger_area.tscn" id="14_44wna"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uscoa"]
 sky_top_color = Color(0.211765, 0.313726, 0.552941, 1)
@@ -53,6 +56,43 @@ _data = {
 }
 point_count = 5
 
+[sub_resource type="Animation" id="Animation_517fx"]
+resource_name = "new_animation"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(2.63902, 0.287175),
+"update": 0,
+"values": [Vector3(0, 2, 37.841), Vector3(0, 2, -37.355)]
+}
+
+[sub_resource type="Animation" id="Animation_3wccj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hyn44"]
+_data = {
+"RESET": SubResource("Animation_3wccj"),
+"new_animation": SubResource("Animation_517fx")
+}
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_pqkch")
 enemy_scene = ExtResource("8_7ty2f")
@@ -68,7 +108,7 @@ light_energy = 2.0
 sky_mode = 1
 
 [node name="Player" parent="." node_paths=PackedStringArray("crosshair") instance=ExtResource("2_elriq")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.399095, 4.34758, -35.1552)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 crosshair = NodePath("../HUD/Crosshair")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
@@ -154,23 +194,46 @@ offset_bottom = 74.0
 bbcode_enabled = true
 text = "[font size=40]第 1 / 10 波次[/font]"
 
-[node name="LowPolyHud" type="Node" parent="HUD"]
+[node name="Hint" type="Label" parent="HUD"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "W A S D 移动，空格跳跃，左键开火"
+
+[node name="MainMenu" type="CanvasLayer" parent="HUD"]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="HUD/MainMenu"]
+offset_left = -41.0
+offset_top = -21.0
+offset_right = 1315.0
+offset_bottom = 741.0
+texture = ExtResource("9_wliga")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="HUD/MainMenu"]
+offset_left = 304.0
+offset_top = 570.0
+offset_right = 949.0
+offset_bottom = 700.0
+text = "按下 “E” 开始游戏"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Enemies" type="Node" parent="."]
+script = ExtResource("9_4w057")
+enemy_scene = ExtResource("8_7ty2f")
 
-[node name="enemy-flying" parent="Enemies" instance=ExtResource("8_7ty2f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2.5, -6)
+[node name="Marker3D" type="Marker3D" parent="Enemies"]
+transform = Transform3D(0.999873, 0, -0.0159516, 0, 1, 0, 0.0159516, 0, 0.999873, -7.70723, 8.05129, 12.3697)
 
-[node name="enemy-flying2" parent="Enemies" instance=ExtResource("8_7ty2f")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.5, 2.5, 1.5)
+[node name="Marker3D2" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5159, 0, 0)
 
-[node name="enemy-flying3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
-transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 5.5, 3.5, 9)
-player = NodePath("../../Player")
+[node name="Marker3D3" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.7487, 0, 0)
 
-[node name="enemy-flying4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 15.5, 4, -7.5)
-player = NodePath("../../Player")
+[node name="Marker3D4" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
 
 [node name="Decoration" type="Node" parent="."]
 
@@ -199,10 +262,6 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="Enemy Timer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
-
 [node name="SpawnPath" type="Path3D" parent="."]
 curve = SubResource("Curve3D_k2g3o")
 
@@ -210,9 +269,18 @@ curve = SubResource("Curve3D_k2g3o")
 transform = Transform3D(-0.999959, 0, 0.00909069, 0, 1, 0, -0.00909069, 0, -0.999959, -31.423, 0, -24.6626)
 
 [node name="Police" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.482, 2, 35.8734)
+transform = Transform3D(0.652072, 0, 0.758157, 0, 1, 0, -0.758157, 0, 0.652072, 0.985292, 2, 35.1098)
 mesh = ExtResource("11_f6lx3")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hyn44")
+}
+
+[node name="TriggerArea" parent="." instance=ExtResource("14_44wna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.383303, -10.4225, -0.521671)
+
+[connection signal="enemy_spawn_ordered" from="." to="Enemies" method="_on_main_enemy_spawn_ordered"]
 [connection signal="cardroll_ordered" from="Player" to="." method="_on_player_cardroll_ordered"]
 [connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
 [connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
@@ -220,6 +288,5 @@ mesh = ExtResource("11_f6lx3")
 [connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]
 [connection signal="shift_pressed" from="Player" to="HUD" method="_on_player_shift_pressed"]
 [connection signal="weight_change_ordered" from="Player" to="." method="_on_player_weight_change_ordered"]
+[connection signal="wave_cleared" from="HUD" to="." method="_on_hud_wave_cleared"]
 [connection signal="body_entered" from="Level/GameOverArea" to="Player" method="_on_game_over_area_body_entered"]
-[connection signal="timeout" from="Enemy Timer" to="." method="_on_enemy_timer_timeout"]
-[connection signal="timeout" from="Enemy Timer" to="." method="_on_timer_timeout"]

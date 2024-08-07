@@ -1,14 +1,14 @@
 extends Node3D
 
 @export var player: Node3D
-@export var character_speed := 10
+@export var character_speed := 5
 
 @onready var raycast = $RayCast
 @onready var muzzle_a = $MuzzleA
 @onready var muzzle_b = $MuzzleB
 @onready var navigation_agent = $NavigationAgent3D as NavigationAgent3D
 
-var health := 100
+@onready var health := 100
 var time := 0.0
 var target_position: Vector3
 var destroyed := false
@@ -24,12 +24,12 @@ signal spawn_or_destroyed
 func _ready():
 	player = $"../../Player"
 	target_position = position
-	if Global.IS_IT_MIAMI:
-		health = 1
-		print("OH! MIAMI TIME!")
-	else: 
-		health = health * (10 - Global.DEATH_TIMES) / 10 #RE - 怪物血量跟随减少
-	spawn_or_destroyed.connect($"../../HUD"._on_enemy_spawn_or_destroyed.bind(1))
+	#if Global.IS_IT_MIAMI:
+		#health = 1
+		#print("OH! MIAMI TIME!")
+	#else: 
+		#health = health * (10 - Global.DEATH_TIMES) / 10 #RE - 怪物血量跟随减少
+	spawn_or_destroyed.connect($"../../HUD"._on_enemy_spawn_or_destroyed.bind(-1))
 
 func _process(delta):
 	# Look at player
