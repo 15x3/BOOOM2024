@@ -6,3 +6,8 @@ var IS_RANDOM_TRIGGERED = true
 var RESET_BY_GAME_OVER = 1
 var ENEMIES_LEFT = 4
 var WAVES = 1
+var TUTORIAL = false
+var IS_IT_GAME_STARTED = false
+
+func TYPE_WRITTER(strings:String):
+	pass

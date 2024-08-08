@@ -4,6 +4,15 @@ extends CanvasLayer
 
 signal wave_cleared
 
+func _ready() -> void:
+	Engine.time_scale = 0.0
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("interact") and !Global.IS_IT_GAME_STARTED:
+		Engine.time_scale = 1.0
+		$MainMenu.queue_free()
+		Global.IS_IT_GAME_STARTED = true
+
 func _on_health_updated(health):
 	$Health.text = str(health) + "%"
 

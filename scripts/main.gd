@@ -43,6 +43,7 @@ func _ready() -> void:
 	initialize_card_pool()
 	$Player.global_position = PLAYER_START_POS
 	$AnimationPlayer.play("new_animation")
+	Global.TUTORIAL = false
 	# RE - 重启时的四次选择
 	if Global.RESET_BY_GAME_OVER >= 1:
 		pass
@@ -52,7 +53,7 @@ func _ready() -> void:
 		pass
 	if Global.RESET_BY_GAME_OVER >= 4:
 		pass
-		
+
 	
 	
 func _on_player_death_reloaded() -> void:

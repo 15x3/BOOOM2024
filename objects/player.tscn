@@ -81,8 +81,11 @@ one_shot = true
 
 [node name="PlayerArea3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0590208, -0.532933)
-collision_layer = 16
-collision_mask = 16
+collision_layer = 0
+collision_mask = 17
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerArea3D"]
 shape = SubResource("CylinderShape3D_87y3w")
+
+[connection signal="area_entered" from="PlayerArea3D" to="." method="_on_player_area_3d_area_entered"]

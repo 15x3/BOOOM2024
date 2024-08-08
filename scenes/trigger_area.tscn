@@ -1,12 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3rgxmaffte2k"]
+[gd_scene load_steps=4 format=3 uid="uid://c3rgxmaffte2k"]
 
 [ext_resource type="Script" path="res://scripts/trigger_area.gd" id="1_6v23r"]
+[ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://objects/enemy.tscn" id="2_sv1w8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_phe2k"]
 size = Vector3(5, 5, 5)
 
 [node name="TriggerArea" type="Area3D"]
+collision_layer = 2
+collision_mask = 3
+monitorable = false
 script = ExtResource("1_6v23r")
+enemy_scene = ExtResource("2_sv1w8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_phe2k")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

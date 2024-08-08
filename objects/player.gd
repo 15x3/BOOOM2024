@@ -50,6 +50,7 @@ signal card_choose_ordered
 signal weight_change_ordered
 signal game_over
 signal shift_pressed
+signal zone_triggered
 
 @onready var camera = $Head/Camera
 @onready var raycast = $Head/Camera/RayCast
@@ -70,7 +71,7 @@ func _ready():
 	timer_bar.max_value = DOUBLE_PRESS_THRESHOLD
 	timer_bar.value = 0
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
+	add_to_group("player")
 	weapon = weapons[weapon_index] # Weapon must never be nil
 	initiate_change_weapon(weapon_index)
 	if Global.IS_IT_MIAMI:
@@ -191,7 +192,7 @@ func handle_controls(_delta):
 	action_weapon_toggle()
 	
 	# SHIFT - Gravity Change and Scene SHIFT
-	if Input.is_action_just_pressed("weapon_toggle"):  # 默认 "ui_select" 映射到 "E" 键
+	if Input.is_action_just_pressed("interact") and !Global.TUTORIAL and Global.IS_IT_GAME_STARTED:  # 默认 "ui_select" 映射到 "E" 键
 		if is_waiting_for_second_press:
 			on_double_press()
 		else:
@@ -392,6 +393,14 @@ func reset_press_state():
 
 func _on_game_over_area_body_entered(body: Node3D) -> void:
 	# 检查进入的物体是否是玩家
-	if body.name == "Player":  # 假设玩家节点的名称为 "Player"
-		emit_signal("game_over")  # 发出游戏结束信号
-		print("Game Over!")  # 你可以在这里调用其他游戏结束逻辑
+	if body.name == "Player" and Global.IS_IT_GAME_STARTED:
+		if Global.TUTORIAL:
+			$"../HUD/Pause-button".visible = true
+		else:  # 假设玩家节点的名称为 "Player"
+			emit_signal("game_over")  # 发出游戏结束信号
+			print("Game Over!")  # 你可以在这里调用其他游戏结束逻辑
+
+
+func _on_player_area_3d_area_entered(area: Area3D) -> void:
+	if area.is_in_group("Trigger"):
+		emit_signal("zone_triggered")
