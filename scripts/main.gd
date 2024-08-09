@@ -42,8 +42,11 @@ func _ready() -> void:
 	enemies_node = get_node("Enemies")
 	initialize_card_pool()
 	$Player.global_position = PLAYER_START_POS
-	$AnimationPlayer.play("new_animation")
 	Global.TUTORIAL = false
+	Global.IS_IT_GAME_STARTED = false
+	$AnimationPlayer.play("new_animation")
+	await get_tree().create_timer(1).timeout 
+	Global.IS_IT_GAME_STARTED = true
 	# RE - 重启时的四次选择
 	if Global.RESET_BY_GAME_OVER >= 1:
 		pass
@@ -60,8 +63,8 @@ func _on_player_death_reloaded() -> void:
 	Global.DEATH_TIMES += 1 
 	get_tree().reload_current_scene()
 	
-func _on_player_scene_filp_ordered() -> void:
-	flip_levels()
+#func _on_player_scene_filp_ordered() -> void:
+	#flip_levels()
 
 func _on_player_cardroll_ordered() -> void:
 	for i in range(1, 4):  # 循环从1到3
@@ -75,16 +78,16 @@ func _on_player_cardroll_ordered() -> void:
 		else:
 			print("RichTextLabel not found or wrong type for:", child_name)
 
-func flip_levels():
-	# 遍历 Levels 节点下的所有 GridMap 子节点
-	for i in range(1,10):
-		pixelshader.set_shader_parameter("quantize_size",i)
-		await get_tree().create_timer(0.05).timeout 
-	for child in levels_node.get_children():
-			child.transform.basis = Basis(Vector3(1, 0, 0), PI) * child.transform.basis
-	for i in range(10,1,-1):	
-		pixelshader.set_shader_parameter("quantize_size",i)
-		await get_tree().create_timer(0.05).timeout 
+#func flip_levels():
+	## 遍历 Levels 节点下的所有 GridMap 子节点
+	#for i in range(1,10):
+		#pixelshader.set_shader_parameter("quantize_size",i)
+		#await get_tree().create_timer(0.05).timeout 
+	#for child in levels_node.get_children():
+			#child.transform.basis = Basis(Vector3(1, 0, 0), PI) * child.transform.basis
+	#for i in range(10,1,-1):	
+		#pixelshader.set_shader_parameter("quantize_size",i)
+		#await get_tree().create_timer(0.05).timeout 
 
 
 func initialize_card_pool():

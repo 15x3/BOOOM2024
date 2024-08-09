@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ci4537lq48oho"]
+
+[ext_resource type="Script" path="res://scripts/shift.gd" id="1_fa55y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x7lmj"]
+
+[sub_resource type="TextMesh" id="TextMesh_v41yj"]
+material = SubResource("StandardMaterial3D_x7lmj")
+text = "⬆
+           SHIFT
+                       ⬇"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kjeof"]
+size = Vector3(10, 10, 10)
+
+[node name="SHIFT" type="Area3D"]
+script = ExtResource("1_fa55y")
+
+[node name="SHIFT" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2, 0, -1.74846e-07, 0, 2, 0, 1.74846e-07, 0, -2, 0.48, 3, 0)
+mesh = SubResource("TextMesh_v41yj")
+skeleton = NodePath("../../../Decoration")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_kjeof")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

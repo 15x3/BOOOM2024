@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+
 # HACK - RE和SHIFT机制本身有一定联动性
 @export_subgroup("Properties")
 @export var movement_speed = 5
@@ -7,6 +8,7 @@ extends CharacterBody3D
 
 @export_subgroup("Weapons")
 @export var weapons: Array[Weapon] = []
+
 
 const DOUBLE_PRESS_THRESHOLD = 0.2
 
@@ -192,7 +194,8 @@ func handle_controls(_delta):
 	action_weapon_toggle()
 	
 	# SHIFT - Gravity Change and Scene SHIFT
-	if Input.is_action_just_pressed("interact") and !Global.TUTORIAL and Global.IS_IT_GAME_STARTED:  # 默认 "ui_select" 映射到 "E" 键
+	#if Input.is_action_just_pressed("interact") and !Global.TUTORIAL and Global.IS_IT_GAME_STARTED:  # 默认 "ui_select" 映射到 "E" 键
+	if Input.is_action_just_pressed("interact"):
 		if is_waiting_for_second_press:
 			on_double_press()
 		else:
@@ -367,8 +370,9 @@ func damage(amount):
 			#return
 
 func on_double_press():
-	emit_signal("scene_filp_ordered")
+	#emit_signal("scene_filp_ordered")
 	reset_press_state()
+	grav_constract = -grav_constract
 
 func start_waiting_for_second_press():
 	is_waiting_for_second_press = true
@@ -382,7 +386,8 @@ func update_press_timer(delta):
 		on_single_press()
 
 func on_single_press():
-	grav_constract = -grav_constract
+	#grav_constract = -grav_constract
+	change_others_gravity()
 	reset_press_state()
 
 func reset_press_state():
@@ -391,16 +396,46 @@ func reset_press_state():
 	timer_bar.visible = false
 
 
-func _on_game_over_area_body_entered(body: Node3D) -> void:
-	# 检查进入的物体是否是玩家
-	if body.name == "Player" and Global.IS_IT_GAME_STARTED:
-		if Global.TUTORIAL:
-			$"../HUD/Pause-button".visible = true
-		else:  # 假设玩家节点的名称为 "Player"
-			emit_signal("game_over")  # 发出游戏结束信号
-			print("Game Over!")  # 你可以在这里调用其他游戏结束逻辑
+#func _on_game_over_area_body_entered(body: Node3D) -> void:
+	## 检查进入的物体是否是玩家
+	#if body.name == "Player" and Global.IS_IT_GAME_STARTED:
+		#if Global.TUTORIAL:
+			#$"../HUD/Pause-button".visible = true
+			#Audio.play("sounds/DevolverDigital.ogg")
+			#
+			#$"../HUD/对话".text = "然后勒，后面咱们就收个尾，再留个悬念"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = "我感觉啊，这（游戏）我们起码可以搞4、5年"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = ""
+			#await get_tree().create_timer(2).timeout
+			#$"../HUD/对话".text = "咋样？我的意思是... ...咋样？牛逼吧？"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = "这主意蠢爆了，绝对行不通"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = "你能想得出来，说明你就一傻X"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = "这玩意谁特么能想得出来？"
+			#await get_tree().create_timer(3).timeout
+			#$"../HUD/对话".text = "说了是我啊，我想出来的"
+			#await get_tree().create_timer(1).timeout
+			#$"../HUD/对话".text = "傻Ⅹ才能想得....."
+			#await get_tree().create_timer(2).timeout
+			#$"../HUD/对话".queue_free()
+			#$"../HUD/Pause-button".queue_free()
+		#else:  # 假设玩家节点的名称为 "Player"
+			#emit_signal("game_over")  # 发出游戏结束信号
+			#print("Game Over!")  # 你可以在这里调用其他游戏结束逻辑
+			
 
 
 func _on_player_area_3d_area_entered(area: Area3D) -> void:
 	if area.is_in_group("Trigger"):
 		emit_signal("zone_triggered")
+
+
+func change_others_gravity() -> void:
+	for child in $PlayerArea3D.get_overlapping_bodies():
+		if child.has_signal("gravity_change_ordered"):
+			child.emit_signal("gravity_change_ordered")
+	pass

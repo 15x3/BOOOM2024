@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://3yvf1jfhrkop"]
+
+[ext_resource type="PackedScene" uid="uid://coir7kewfabo3" path="res://models/free__blender_-_20xx_porsche_macan.glb" id="1_0cef8"]
+[ext_resource type="Script" path="res://scripts/boss.gd" id="1_a8alt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ytjkv"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_evp4s"]
+size = Vector3(1.48975, 1.24078, 3.43604)
+
+[node name="Boss" type="CharacterBody3D"]
+script = ExtResource("1_a8alt")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_0cef8")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="EndGameZone" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_ytjkv")
+
+[node name="HitBox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0339355, 0.0379333, -0.00415039)
+shape = SubResource("BoxShape3D_evp4s")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

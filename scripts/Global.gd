@@ -8,6 +8,8 @@ var ENEMIES_LEFT = 4
 var WAVES = 1
 var TUTORIAL = false
 var IS_IT_GAME_STARTED = false
+var IS_IT_GAME_END = false
+var IS_BOSS_FIGHT = false
 
 func TYPE_WRITTER(strings:String):
 	pass
