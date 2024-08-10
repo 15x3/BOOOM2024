@@ -1,6 +1,16 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://brhp4urdiiyam"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://brhp4urdiiyam"]
 
 [ext_resource type="Shader" path="res://shaders/ColorRectDitherTest.gdshader" id="1_uw23d"]
+
+[sub_resource type="Gradient" id="Gradient_6tr3r"]
+offsets = PackedFloat32Array(0, 0.333333, 0.666667, 1)
+colors = PackedColorArray(0.0352941, 0.0705882, 0.0156863, 1, 0.301961, 0.423529, 0.184314, 1, 0.494118, 0.643137, 0.337255, 1, 0.87451, 0.886275, 0.717647, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 3
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_iyv1h"]
+gradient = SubResource("Gradient_6tr3r")
+width = 8
 
 [resource]
 shader = ExtResource("1_uw23d")
@@ -14,3 +24,4 @@ shader_parameter/contrast = 1.5
 shader_parameter/shift = 4.75e-08
 shader_parameter/grayscale = false
 shader_parameter/use_palette = false
+shader_parameter/palette = SubResource("GradientTexture1D_iyv1h")

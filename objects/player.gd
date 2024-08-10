@@ -303,14 +303,24 @@ func action_shoot():
 
 func action_weapon_toggle():
 	
-	if Input.is_action_just_pressed("weapon_toggle"):
-		
-		weapon_index = wrap(weapon_index + 1, 0, weapons.size())
-		initiate_change_weapon(weapon_index)
-		
-		Audio.play("sounds/weapon_change.ogg")
-		
-		#grav_constract = -grav_constract
+	#if Input.is_action_just_pressed("weapon_toggle"):
+		#
+		#weapon_index = wrap(weapon_index + 1, 0, weapons.size())
+		#initiate_change_weapon(weapon_index)
+		#
+		#Audio.play("sounds/weapon_change.ogg")
+		#
+		##grav_constract = -grav_constract
+	if Input.is_action_just_pressed("weapon_machinegun"):
+		if weapon_index != 1:
+			weapon_index = 1
+			initiate_change_weapon(1)
+			Audio.play("sounds/weapon_change.ogg")
+	elif Input.is_action_just_pressed("weapon_shotgun"):
+		if weapon_index != 0:
+			weapon_index = 0
+			initiate_change_weapon(0)
+			Audio.play("sounds/weapon_change.ogg")
 
 # Initiates the weapon changing animation (tween)
 
@@ -435,7 +445,10 @@ func _on_player_area_3d_area_entered(area: Area3D) -> void:
 
 
 func change_others_gravity() -> void:
-	for child in $PlayerArea3D.get_overlapping_bodies():
-		if child.has_signal("gravity_change_ordered"):
-			child.emit_signal("gravity_change_ordered")
-	pass
+	if Global.IS_SHIFT_TRIGGERED:
+		for child in $PlayerArea3D.get_overlapping_bodies():
+			if child.has_signal("gravity_change_ordered"):
+				child.emit_signal("gravity_change_ordered")
+		for child in $PlayerArea3D.get_overlapping_areas():
+			if child.has_signal("gravity_change_ordered"):
+				child.emit_signal("gravity_change_ordered")

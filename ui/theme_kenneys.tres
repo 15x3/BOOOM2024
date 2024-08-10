@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://cotx1i50knu0e" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_square_gradient.png" id="1_bruvr"]
 [ext_resource type="Texture2D" uid="uid://pbp2aqioam83" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_rectangle_gloss.png" id="2_j1ds2"]
+[ext_resource type="FontFile" uid="uid://bn1lg081a1168" path="res://fonts/VonwaonBitmap-16px.ttf" id="2_u6x81"]
 [ext_resource type="Texture2D" uid="uid://5e5wvtgxuvi1" path="res://ui/kenney_ui-pack/PNG/Blue/Double/button_square_gloss.png" id="4_as2pn"]
-[ext_resource type="FontFile" uid="uid://cswljfl3f0153" path="res://ui/kenney_ui-pack/Font/Kenney Future.ttf" id="5_hb8kf"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7sw1h"]
 texture = ExtResource("1_bruvr")
@@ -29,11 +29,15 @@ texture = ExtResource("4_as2pn")
 texture = ExtResource("4_as2pn")
 
 [resource]
-default_font = ExtResource("5_hb8kf")
-default_font_size = 0
+default_font = ExtResource("2_u6x81")
+default_font_size = 36
 Label/styles/normal = SubResource("StyleBoxTexture_7sw1h")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_a5kf5")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_qsg6r")
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 0.470588)
+RichTextLabel/constants/outline_size = 12
+RichTextLabel/constants/shadow_outline_size = 1
+RichTextLabel/fonts/bold_font = ExtResource("2_u6x81")
 RichTextLabel/styles/background = SubResource("StyleBoxTexture_3vxtd")
 TextEdit/styles/focus = SubResource("StyleBoxTexture_nouhu")
 TextEdit/styles/normal = SubResource("StyleBoxTexture_o1pkw")

@@ -37,4 +37,5 @@ autostart = true
 path_desired_distance = 0.1
 debug_enabled = true
 
+[connection signal="gravity_change_ordered" from="." to="." method="_on_gravity_change_ordered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

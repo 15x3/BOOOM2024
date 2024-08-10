@@ -1,22 +1,22 @@
 extends Node3D
 
 @export var player: Node3D
-@export var character_speed := 5
+@export var character_speed := 4
 
 @onready var raycast = $RayCast
 @onready var muzzle_a = $MuzzleA
 @onready var muzzle_b = $MuzzleB
 @onready var navigation_agent = $NavigationAgent3D as NavigationAgent3D
-
 @onready var health := 100
 var time := 0.0
 var target_position: Vector3
 var destroyed := false
 var min_speed = 10
 var max_speed = 50
+var is_floating = false
 
 signal spawn_or_destroyed
-
+signal gravity_change_ordered
 # When ready, save the initial position
 
 
@@ -40,7 +40,11 @@ func _process(delta):
 	target_position.y += (cos(time * 5) * 1) * delta
 	time += delta
 	# Update target position for NavigationAgent3D
-	navigation_agent.set_target_position(player.position)
+	if is_floating:
+		navigation_agent.set_target_position(self.position)
+		get_tree().create_tween().tween_property(self,"position",self.position + Vector3(0,5,0),5)
+	else:
+		navigation_agent.set_target_position(player.position)
 
 	# Move towards target using NavigationAgent3D
 	#var direction = (navigation_agent.get_next_path_position() - global_transform.origin).normalized()
@@ -66,6 +70,7 @@ func _physics_process(delta):
 	var next_position := navigation_agent.get_next_path_position()
 	var offset := next_position - global_position
 	global_position = global_position.move_toward(next_position, delta * character_speed)
+	
 
 # Destroy the enemy when out of health
 
@@ -101,7 +106,7 @@ func _on_timer_timeout():
 
 			Audio.play("sounds/enemy_attack.ogg")
 
-			collider.damage(5)  # Apply damage to player
+			collider.damage(1)  # Apply damage to player
 			
 #func spawn_and_chase(start_position, player_position):
 	## We position the mob by placing it at start_position
@@ -119,3 +124,8 @@ func _on_timer_timeout():
 	## in order to move in the direction the mob is looking.
 	#velocity = velocity.rotated(Vector3.UP, rotation.y)
 	#pass
+
+func _on_gravity_change_ordered() -> void:
+	is_floating = true
+	await get_tree().create_timer(5).timeout
+	is_floating = false

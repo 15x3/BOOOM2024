@@ -15,4 +15,4 @@ func _on_main_enemy_spawn_ordered(num) -> void:
 		await get_tree().create_timer(0.05).timeout 
 		Global.ENEMIES_LEFT += 1
 		$"../HUD/EnemyLeft".clear()
-		$"../HUD/EnemyLeft".append_text("[shake rate=16 level=15][font size=40]剩余敌人："+str(Global.ENEMIES_LEFT)+"[/font][/shake]")
+		$"../HUD/EnemyLeft".append_text("[font size=40]剩余敌人："+str(Global.ENEMIES_LEFT)+"[/font]")

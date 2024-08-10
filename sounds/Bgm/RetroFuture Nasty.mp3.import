@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d1crbelodv0rh"
+path="res://.godot/imported/RetroFuture Nasty.mp3-cb8db4821bbb0a264308520c7dd3e0aa.mp3str"
+
+[deps]
+
+source_file="res://sounds/Bgm/RetroFuture Nasty.mp3"
+dest_files=["res://.godot/imported/RetroFuture Nasty.mp3-cb8db4821bbb0a264308520c7dd3e0aa.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

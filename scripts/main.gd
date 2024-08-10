@@ -202,15 +202,35 @@ func spawn_enemies(num) -> void:
 
 func _on_hud_wave_cleared() -> void:
 	Global.WAVES += 1
-	$HUD/WaveLeft.clear()
-	$HUD/WaveLeft.append_text("[font size=40]第 " + str(Global.WAVES) + " / 10 波次[/font]")
-	enemy_spawn_ordered.emit(5)
-	if current_wave == 2:
-		pass
-	elif current_wave == 3 or current_wave == 4 :
-		pass
-	elif current_wave == 5:
-		pass
+	$HUD/WaveLabel.text = "第 "+str(Global.WAVES)+" / 15 波次"
+	$HUD/WaveLabel.visible = true
+	await get_tree().create_timer(5).timeout 
+	$HUD/WaveLabel.visible = false
+	#enemy_spawn_ordered.emit(5)
+	if Global.WAVES == 1: # 第二波，SHIFT机制引入
+		enemy_spawn_ordered.emit(5)
+		Global.IS_SHIFT_TRIGGERED = true
+		$HUD/Hint2.text = "单击[E]改变前方物体/敌人的重力"
+		$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		$HUD/Hint2.visible = false
+		$HUD/Hint2.text = "快速双击[E]改变自身重力，注意：位置高于建筑物时会受到环境伤害"
+		$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		$HUD/Hint2.visible = false
+		$HUD/Skillbar.visible = true
+	elif Global.WAVES == 2 or Global.WAVES == 3 : # 第三第四波，正常增加怪物，增加车辆
+		enemy_spawn_ordered.emit(6)
+	elif Global.WAVES == 4:
+		enemy_spawn_ordered.emit(10)
+		$HUD/Hint2.text = "前往中央的黑洞处可切换当前游戏主题"
+		$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		$HUD/Hint2.visible = false
+		$HUD/Hint2.text = "不同主题下，核心机制与怪物行为将有所不同"
+		$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		$HUD/Hint2.visible = false
 	elif current_wave >= 6 or current_wave == 7 or current_wave == 8:
 		pass
 	elif current_wave == 9:

@@ -37,8 +37,25 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			$"../HUD/对话".queue_free()
 			$"../HUD/Pause-button".queue_free()
 		elif Global.TUTORIAL:
+			$"../Tutorial".queue_free()
 			$"../AnimationPlayer".play("intro_animation_2")
 			await get_tree().create_timer(3).timeout
-			$"../HUD/对话".text = "当然，游戏从来不会让你简单地完成任务..."
+			$"../HUD/对话".text = "当然，任何游戏都不会让你这么简单地完成目标..."
 			await get_tree().create_timer(3).timeout
 			$"../HUD/对话".text = ""
+			$"../AudioStream_Clean".play()
+			# 这些东西实际上可以用动画做完，但是这里我就不跳出我的舒适区了
+			$"../HUD/Intro/BooomLogo".visible = true
+			await get_tree().create_timer(1.4).timeout
+			$"../HUD/Intro/MyLogo".visible = true
+			await get_tree().create_timer(3.6).timeout
+			$"../HUD/Intro/BooomLogo".visible = false
+			$"../HUD/Intro/MyLogo".visible = false
+			$"../HUD/Intro/ChangeMineJamTheme".visible = true
+			await get_tree().create_timer(5).timeout
+			$"../HUD/Intro".queue_free()
+			#print($"../AudioStream_Clean".get_playback_position())
+			$"../HUD/Health".visible = true
+			Global.IS_IT_GAME_STARTED = true
+			Global.ENEMIES_LEFT = 0
+			$"../Enemies"._on_main_enemy_spawn_ordered(5)

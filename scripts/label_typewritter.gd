@@ -1,7 +1,7 @@
 extends Label
 
 var total_characters = 0
-var text_speed = 70
+var text_speed = 35
 var is_typing = false
 var accumulated_time = 0.0
 
