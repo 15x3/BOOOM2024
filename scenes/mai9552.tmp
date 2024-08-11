@@ -1,0 +1,618 @@
+[gd_scene load_steps=51 format=3 uid="uid://fo7h71f3j727"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_pqkch"]
+[ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_elriq"]
+[ext_resource type="PackedScene" uid="uid://bnsxavfn2uxew" path="res://scenes/trigger_area_bubble.tscn" id="3_4jba4"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_s8mkj"]
+[ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="4_6d54a"]
+[ext_resource type="Theme" uid="uid://cyg1er5tn6vi8" path="res://ui/theme_kenneys.tres" id="6_1fiqt"]
+[ext_resource type="Material" uid="uid://brhp4urdiiyam" path="res://shaders/pixel_shader.tres" id="6_ehviv"]
+[ext_resource type="LabelSettings" uid="uid://d1n6md4i2lyqt" path="res://scripts/label_settings.tres" id="7_rqqqd"]
+[ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://objects/enemy.tscn" id="8_7ty2f"]
+[ext_resource type="Script" path="res://scripts/enemies.gd" id="9_4w057"]
+[ext_resource type="PackedScene" uid="uid://ccbffi713mhqq" path="res://scenes/Level.tscn" id="9_mxv00"]
+[ext_resource type="Texture2D" uid="uid://dx0xsdce7dd7" path="res://objects/Change mine Jam Theme.png" id="9_wliga"]
+[ext_resource type="MeshLibrary" uid="uid://d13yslh27k0b0" path="res://models/Road_tile_meshlib.tres" id="10_6o7ks"]
+[ext_resource type="Texture2D" uid="uid://jbkvb1xt2ohs" path="res://models/pause-button.png" id="10_jvdrm"]
+[ext_resource type="Script" path="res://scripts/label_typewritter.gd" id="11_brik8"]
+[ext_resource type="ArrayMesh" uid="uid://m7ojnwbokvtp" path="res://models/Car-kit/OBJ format/police.obj" id="11_f6lx3"]
+[ext_resource type="Texture2D" uid="uid://dc2e0hv7uylxq" path="res://models/下载.png" id="11_y1a4k"]
+[ext_resource type="Texture2D" uid="uid://dyn446arrjmwg" path="res://models/重金寻车.png" id="13_oolb7"]
+[ext_resource type="ArrayMesh" uid="uid://b1oia86tft885" path="res://models/Space-convoy-kit/OBJ format/conveyor-long-stripe.obj" id="14_pi5ui"]
+[ext_resource type="Script" path="res://scripts/tutorial_move.gd" id="15_ecg1g"]
+[ext_resource type="Texture2D" uid="uid://cdcc4idtifxb4" path="res://models/Logo1.png" id="15_tlu4w"]
+[ext_resource type="Script" path="res://scripts/tutorial_shoot.gd" id="16_hnm02"]
+[ext_resource type="Script" path="res://scripts/tutorial_trigger_zone.gd" id="17_8eyr8"]
+[ext_resource type="PackedScene" uid="uid://d3nl5emkg0gtk" path="res://objects/RigidBodys/suv_luxury.tscn" id="20_6w7c3"]
+[ext_resource type="ArrayMesh" uid="uid://bsgbyx3olyhbs" path="res://models/Space-convoy-kit/OBJ format/conveyor-long-stripe-sides.obj" id="21_iypa0"]
+[ext_resource type="PackedScene" uid="uid://3yvf1jfhrkop" path="res://scenes/boss.tscn" id="25_6tm1w"]
+[ext_resource type="Script" path="res://scripts/hint.gd" id="25_q8ymf"]
+[ext_resource type="AudioStream" uid="uid://c71457v1pbcho" path="res://sounds/Bgm/RetroFuture Clean.mp3" id="27_jjp2g"]
+[ext_resource type="AudioStream" uid="uid://d1crbelodv0rh" path="res://sounds/Bgm/RetroFuture Nasty.mp3" id="28_6bv4t"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uscoa"]
+sky_top_color = Color(0.211765, 0.313726, 0.552941, 1)
+sky_horizon_color = Color(0.545098, 0.686275, 0.811765, 1)
+sky_curve = 0.13
+ground_bottom_color = Color(0.545098, 0.686275, 0.811765, 1)
+ground_horizon_color = Color(0.545098, 0.686275, 0.811765, 1)
+
+[sub_resource type="Sky" id="Sky_yiioa"]
+sky_material = SubResource("ProceduralSkyMaterial_uscoa")
+
+[sub_resource type="Environment" id="Environment_acvlh"]
+background_mode = 2
+sky = SubResource("Sky_yiioa")
+ambient_light_source = 3
+ambient_light_color = Color(0.5, 0.5, 0.5, 1)
+ambient_light_sky_contribution = 0.3
+ambient_light_energy = 3.0
+reflected_light_source = 2
+tonemap_mode = 2
+tonemap_white = 5.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xu13a"]
+size = Vector2(1, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1fvjk"]
+albedo_texture = ExtResource("13_oolb7")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_arq1p"]
+points = PackedVector3Array(-1, 0.1, -0.5, -1, 0.3, -0.5, -0.900157, 0, -0.5, -1, 0.1, 0.5, -1, 0.3, 0.5, -0.900157, 0.4, -0.5, -0.900157, 0, 0.5, 0.899961, 0, -0.5, -0.900157, 0.4, 0.5, 0.899961, 0.4, -0.5, 0.899961, 0, 0.5, 1, 0.1, -0.5, 0.899961, 0.4, 0.5, 1, 0.3, -0.5, 1, 0.1, 0.5, 1, 0.3, 0.5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_q8uda"]
+size = Vector2(0.5, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7k71p"]
+albedo_texture = ExtResource("15_tlu4w")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oxu7m"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_7pl8p"]
+vertices = PackedVector3Array(-21.25, 2.5, -18.5, -15.5, 2.5, -18.5, -15.5, 2.5, -21.25, -13.25, 2.5, -21.5, -13.25, 2.5, -38.5, -41.5, 2.5, -16.25, -21.5, 2.5, -16.25, -41.5, 2.5, -38.5, -7.75, 2.5, -21.5, -7.75, 2.5, -38.5, -5.5, 2.5, -19.25, 8.5, 2.5, -19.25, 8.5, 2.5, -21.25, -5.75, 2.5, -21.5, 10.75, 2.5, -21.5, 10.75, 2.5, -38.5, 22.25, 2.5, -21.5, 22.25, 2.5, -38.5, 24.25, 2.5, -21.5, 24.5, 2.5, -19.25, 38.5, 2.5, -19.25, 38.5, 2.5, -38.5, -5.5, 2.5, -7.75, 8.5, 2.5, -7.75, 24.5, 2.5, -4.75, 38.5, 2.5, -4.75, -41.5, 2.5, -7.75, -21.5, 2.5, -7.75, -18.5, 2.5, -2.75, -18.5, 2.5, -5.5, -21.5, 2.5, -5.75, -16.25, 2.5, 2.5, -16.25, 2.5, -2.5, -21.25, 2.5, 2.5, -21.5, 2.5, 4.75, -41.5, 2.5, 4.75, -8.75, 2.5, 2.5, -8.5, 2.5, 5.5, -5.75, 2.5, 5.5, 11.75, 2.5, -2.5, 11.5, 2.5, -5.5, 8.75, 2.5, -5.5, -10.75, 2.5, -2.5, -10.75, 2.5, 2.5, -5.75, 2.5, -2.5, -5.5, 2.5, 7.75, 5.5, 2.5, 7.75, 5.75, 2.5, 5.5, 16.25, 2.5, 5.5, 16.25, 2.5, -2.5, 18.5, 2.5, 5.75, 24.25, 2.5, -2.5, 18.5, 2.5, 24, 38.5, 2.5, 24, -41.5, 2.5, 16.25, -21.5, 2.5, 16.25, -5.5, 2.5, 16.25, 5.5, 2.5, 16.25, -21.5, 2.5, 18.25, -19.25, 2.5, 38.5, -19.25, 2.5, 18.5, -41.5, 2.5, 38.5, -5.75, 2.5, 18.5, 5.5, 2.5, 24.25, -7.75, 2.5, 18.5, -7.75, 2.5, 38.5, 7.75, 2.5, 38.5, 7.75, 2.5, 24.5, 18.25, 2.5, 24.5, 16.25, 2.5, 24.5, 16.25, 2.5, 38.5, 38.5, 2.5, 38.5)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 2), PackedInt32Array(0, 6, 5), PackedInt32Array(2, 0, 4), PackedInt32Array(4, 0, 5), PackedInt32Array(4, 5, 7), PackedInt32Array(4, 9, 3), PackedInt32Array(3, 9, 8), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(13, 8, 9), PackedInt32Array(12, 13, 14), PackedInt32Array(14, 13, 15), PackedInt32Array(15, 13, 9), PackedInt32Array(15, 17, 14), PackedInt32Array(14, 17, 16), PackedInt32Array(20, 19, 18), PackedInt32Array(18, 16, 17), PackedInt32Array(17, 21, 18), PackedInt32Array(18, 21, 20), PackedInt32Array(10, 11, 22), PackedInt32Array(22, 11, 23), PackedInt32Array(19, 20, 24), PackedInt32Array(24, 20, 25), PackedInt32Array(5, 6, 26), PackedInt32Array(26, 6, 27), PackedInt32Array(30, 29, 28), PackedInt32Array(28, 32, 31), PackedInt32Array(31, 33, 28), PackedInt32Array(28, 33, 30), PackedInt32Array(26, 27, 30), PackedInt32Array(33, 34, 30), PackedInt32Array(30, 34, 35), PackedInt32Array(30, 35, 26), PackedInt32Array(38, 37, 36), PackedInt32Array(41, 40, 39), PackedInt32Array(36, 43, 42), PackedInt32Array(42, 44, 36), PackedInt32Array(36, 44, 38), PackedInt32Array(47, 46, 45), PackedInt32Array(39, 49, 48), PackedInt32Array(41, 39, 47), PackedInt32Array(47, 39, 48), PackedInt32Array(45, 38, 44), PackedInt32Array(41, 47, 23), PackedInt32Array(23, 47, 22), PackedInt32Array(22, 47, 44), PackedInt32Array(44, 47, 45), PackedInt32Array(48, 49, 50), PackedInt32Array(50, 49, 51), PackedInt32Array(51, 25, 50), PackedInt32Array(50, 25, 52), PackedInt32Array(52, 25, 53), PackedInt32Array(51, 24, 25), PackedInt32Array(32, 42, 31), PackedInt32Array(31, 42, 43), PackedInt32Array(35, 34, 54), PackedInt32Array(54, 34, 55), PackedInt32Array(45, 46, 56), PackedInt32Array(56, 46, 57), PackedInt32Array(54, 55, 58), PackedInt32Array(60, 59, 58), PackedInt32Array(58, 59, 61), PackedInt32Array(58, 61, 54), PackedInt32Array(56, 57, 62), PackedInt32Array(62, 57, 63), PackedInt32Array(62, 63, 64), PackedInt32Array(64, 63, 65), PackedInt32Array(65, 63, 66), PackedInt32Array(63, 67, 66), PackedInt32Array(60, 64, 59), PackedInt32Array(59, 64, 65), PackedInt32Array(70, 69, 68), PackedInt32Array(68, 52, 70), PackedInt32Array(70, 52, 53), PackedInt32Array(70, 53, 71), PackedInt32Array(67, 69, 66), PackedInt32Array(66, 69, 70)]
+
+[sub_resource type="Curve3D" id="Curve3D_k2g3o"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -31.423, 0, -24.6626, 0, 0, 0, 0, 0, 0, -31.9359, 0, 31.7549, 0, 0, 0, 0, 0, 0, 32.1749, 0, 32.2678, 0, 0, 0, 0, 0, 0, 31.662, 0, -24.3207, 0, 0, 0, 0, 0, 0, -31.423, 0, -24.6626),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="Animation" id="Animation_3wccj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HUD/Hint:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-300, 200)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Boss:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0428748, 2.67277, 34.1628)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Boss:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.785398, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jel3h"]
+resource_name = "catpure_animation"
+length = 10.0
+
+[sub_resource type="Animation" id="Animation_ga415"]
+resource_name = "hint"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HUD/Hint:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-666, 200), Vector2(0, 200)]
+}
+
+[sub_resource type="Animation" id="Animation_f46ih"]
+resource_name = "intro_animation_2"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boss:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.0428748, 2.67277, 34.1628), Vector3(-0.043, 45, 34.163), Vector3(-0.043, 45, 155)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Boss:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.785398, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_517fx"]
+resource_name = "new_animation"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(2.63902, 0.287175),
+"update": 0,
+"values": [Vector3(0, 2, 37.841), Vector3(0, 2, -37.355)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hyn44"]
+_data = {
+"RESET": SubResource("Animation_3wccj"),
+"catpure_animation": SubResource("Animation_jel3h"),
+"hint": SubResource("Animation_ga415"),
+"intro_animation_2": SubResource("Animation_f46ih"),
+"new_animation": SubResource("Animation_517fx")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rkm46"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_umfb7"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lthh0"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_w1jfd"]
+points = PackedVector3Array(-1, 0, -0.5, -1, 0, 0.5, -1, 0.15, -0.5, 1, 0, -0.5, -1, 0.15, 0.5, 1, 0, 0.5, -1, 0.3, -0.400059, -0.900157, 0.4, -0.400059, 1, 0.15, -0.5, -0.900157, 0.4, 0.399961, -1, 0.3, 0.399961, 1, 0.15, 0.5, 0.899961, 0.4, -0.400059, 1, 0.3, -0.400059, 0.899961, 0.4, 0.399961, 1, 0.3, 0.399961)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_pqkch")
+enemy_scene = ExtResource("8_7ty2f")
+bubble = ExtResource("3_4jba4")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_acvlh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.911663, -0.31204, -0.267398, -0.410311, -0.655256, -0.634259, 0.0227003, 0.687947, -0.725406, 1.64414, 29.4458, -46.8046)
+visible = false
+light_color = Color(0.6, 0.6, 0.6, 1)
+light_energy = 2.0
+sky_mode = 1
+
+[node name="Player" parent="." node_paths=PackedStringArray("crosshair") instance=ExtResource("2_elriq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+crosshair = NodePath("../HUD/Crosshair")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.422618, -0.694272, 0.582563, 0, 0.642788, 0.766044, -0.906308, 0.323744, -0.271654, 0, 0, 0)
+light_energy = 0.5
+shadow_enabled = true
+shadow_opacity = 0.75
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_s8mkj")
+
+[node name="PixelShader" type="ColorRect" parent="HUD"]
+material = ExtResource("6_ehviv")
+offset_left = -37.0
+offset_top = -28.0
+offset_right = 1326.0
+offset_bottom = 747.0
+color = Color(0, 0, 0, 1)
+
+[node name="Crosshair" type="TextureRect" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("4_6d54a")
+
+[node name="Health" type="Label" parent="HUD"]
+visible = false
+offset_left = 48.0
+offset_top = 627.0
+offset_right = 138.0
+offset_bottom = 672.0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "♥ 100% [==========]"
+label_settings = ExtResource("7_rqqqd")
+vertical_alignment = 2
+script = ExtResource("11_brik8")
+
+[node name="Theme" type="Label" parent="HUD"]
+visible = false
+offset_left = 57.0
+offset_top = 518.0
+offset_right = 367.0
+offset_bottom = 575.0
+text = "当前主题：⬆SHIFT⬇
+"
+label_settings = ExtResource("7_rqqqd")
+script = ExtResource("11_brik8")
+
+[node name="Skillbar" type="Label" parent="HUD"]
+visible = false
+offset_left = 48.0
+offset_top = 586.0
+offset_right = 421.0
+offset_bottom = 658.0
+text = "⚡  60% [========  ]"
+label_settings = ExtResource("7_rqqqd")
+script = ExtResource("11_brik8")
+
+[node name="ProgressBar" type="ProgressBar" parent="HUD"]
+visible = false
+offset_left = 329.0
+offset_top = 33.0
+offset_right = 944.0
+offset_bottom = 60.0
+
+[node name="CardPositiveWeightBar" type="ProgressBar" parent="HUD"]
+visible = false
+offset_left = 1217.0
+offset_top = 147.0
+offset_right = 1256.0
+offset_bottom = 570.0
+theme = ExtResource("6_1fiqt")
+fill_mode = 3
+
+[node name="CardSpecialWeightBar" type="ProgressBar" parent="HUD"]
+visible = false
+offset_left = 1163.0
+offset_top = 147.0
+offset_right = 1202.0
+offset_bottom = 570.0
+theme = ExtResource("6_1fiqt")
+fill_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="EnemyLeft" type="RichTextLabel" parent="HUD"]
+visible = false
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 287.0
+offset_bottom = 86.0
+theme = ExtResource("6_1fiqt")
+bbcode_enabled = true
+text = "[shake rate=16 level=15][font size=40]剩余敌人：15[/font][/shake]"
+
+[node name="WaveLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 520.0
+offset_top = 15.0
+offset_right = 772.0
+offset_bottom = 52.0
+text = "第 1 / 15 波次"
+label_settings = ExtResource("7_rqqqd")
+script = ExtResource("11_brik8")
+
+[node name="Hint" type="Label" parent="HUD"]
+offset_left = -300.0
+offset_top = 200.0
+offset_right = 276.0
+offset_bottom = 237.0
+label_settings = ExtResource("7_rqqqd")
+
+[node name="Hint2" type="Label" parent="HUD"]
+offset_top = 194.0
+offset_right = 1268.0
+offset_bottom = 340.0
+text = "单击[E]改变前方物体/敌人的重力"
+label_settings = ExtResource("7_rqqqd")
+script = ExtResource("11_brik8")
+
+[node name="MainMenu" type="CanvasLayer" parent="HUD"]
+
+[node name="Label" type="Label" parent="HUD/MainMenu"]
+visible = false
+offset_left = 304.0
+offset_top = 570.0
+offset_right = 949.0
+offset_bottom = 700.0
+text = "按下 “E” 开始游戏"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pause-button" type="Sprite2D" parent="HUD"]
+visible = false
+position = Vector2(643, 363)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("10_jvdrm")
+
+[node name="Shift" type="CanvasLayer" parent="HUD"]
+visible = false
+
+[node name="CoolDown" type="Label" parent="HUD/Shift"]
+offset_left = 773.0
+offset_top = 11.0
+offset_right = 1259.0
+offset_bottom = 48.0
+text = "Cool_Down [===============]"
+label_settings = ExtResource("7_rqqqd")
+
+[node name="Random" type="CanvasLayer" parent="HUD"]
+visible = false
+
+[node name="Label" type="Label" parent="HUD/Random"]
+offset_left = 685.0
+offset_top = 11.0
+offset_right = 1261.0
+offset_bottom = 48.0
+text = "卡池余量：20 |-----|-----|-----|
+"
+label_settings = ExtResource("7_rqqqd")
+
+[node name="对话" type="Label" parent="HUD"]
+offset_left = 362.0
+offset_top = 74.0
+offset_right = 897.0
+offset_bottom = 180.0
+label_settings = ExtResource("7_rqqqd")
+
+[node name="Intro" type="CanvasLayer" parent="HUD"]
+
+[node name="BooomLogo" type="Sprite2D" parent="HUD/Intro"]
+visible = false
+position = Vector2(480, 360)
+texture = ExtResource("11_y1a4k")
+
+[node name="MyLogo" type="Sprite2D" parent="HUD/Intro"]
+visible = false
+position = Vector2(960, 368)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("15_tlu4w")
+
+[node name="ChangeMineJamTheme" type="Sprite2D" parent="HUD/Intro"]
+visible = false
+position = Vector2(640, 360)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("9_wliga")
+
+[node name="Enemies" type="Node" parent="."]
+script = ExtResource("9_4w057")
+enemy_scene = ExtResource("8_7ty2f")
+
+[node name="Marker3D" type="Marker3D" parent="Enemies"]
+transform = Transform3D(0.999873, 0, -0.0159516, 0, 1, 0, 0.0159516, 0, 0.999873, -7.70723, 8.05129, 12.3697)
+
+[node name="Marker3D2" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5159, 0, 0)
+
+[node name="Marker3D3" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.7487, 0, 0)
+
+[node name="Marker3D4" type="Marker3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+
+[node name="Decoration" type="Node" parent="."]
+
+[node name="Police" type="MeshInstance3D" parent="Decoration"]
+transform = Transform3D(0.999932, 0, 0.0116933, 0, 1, 0, -0.0116933, 0, 0.999932, 5.554, 2.05, 34.284)
+mesh = ExtResource("11_f6lx3")
+skeleton = NodePath("../..")
+
+[node name="重金寻车" type="MeshInstance3D" parent="Decoration"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 3.1792, -31.5)
+mesh = SubResource("PlaneMesh_xu13a")
+surface_material_override/0 = SubResource("StandardMaterial3D_1fvjk")
+
+[node name="Conveyor-long-stripe" type="MeshInstance3D" parent="Decoration"]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0.527372, 3.19444, -32.3158)
+mesh = ExtResource("14_pi5ui")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Decoration/Conveyor-long-stripe"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Decoration/Conveyor-long-stripe/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_arq1p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Decoration"]
+transform = Transform3D(-0.457624, -5.61272e-09, -0.201445, -0.201445, 7.64387e-09, 0.457624, -2.05739e-09, 0.5, -9.25735e-09, 1.75917, 3.64473, -31.5074)
+mesh = SubResource("PlaneMesh_q8uda")
+surface_material_override/0 = SubResource("StandardMaterial3D_7k71p")
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="Ground" parent="Level" instance=ExtResource("9_mxv00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.722542, -0.097065)
+
+[node name="GameOverArea" type="Area3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.998447, 4.06078, 33.5292)
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/GameOverArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24823, 0, -0.396576)
+shape = SubResource("BoxShape3D_oxu7m")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Level"]
+navigation_mesh = SubResource("NavigationMesh_7pl8p")
+
+[node name="GridMap" type="GridMap" parent="Level/NavigationRegion3D"]
+mesh_library = ExtResource("10_6o7ks")
+cell_size = Vector3(3, 3, 3)
+data = {
+"cells": PackedInt32Array(65535, 0, 1048647, 0, 0, 655431, 0, 65535, 1441863, 65535, 65535, 71, 65535, 1, 58, 65535, 2, 58, 65535, 3, 58, 65535, 4, 58, 65535, 5, 58, 65535, 6, 58, 65535, 7, 58, 65535, 8, 58, 65535, 9, 71, 65535, 10, 33, 0, 1, 655418, 0, 2, 655418, 0, 3, 655418, 0, 4, 655418, 0, 5, 655418, 0, 6, 655418, 0, 7, 655418, 0, 8, 655418, 0, 9, 1441863, 0, 10, 33, 1, 65535, 1441850, 1, 0, 1048634, 2, 65535, 1441850, 2, 0, 1048634, 3, 65535, 1441850, 3, 0, 1048634, 4, 65535, 1441850, 4, 0, 1048634, 5, 65535, 1441850, 5, 0, 1048634, 6, 65535, 1441850, 6, 0, 1048634, 7, 65535, 1441850, 7, 0, 1048634, 8, 65535, 1441850, 8, 0, 1048634, 9, 65535, 71, 9, 0, 1048647, 65535, 65528, 58, 65535, 65529, 58, 65535, 65530, 58, 65535, 65531, 58, 65535, 65532, 58, 65535, 65533, 58, 65535, 65534, 58, 0, 65528, 655418, 0, 65529, 655418, 0, 65530, 655418, 0, 65531, 655418, 0, 65532, 655418, 0, 65533, 655418, 0, 65534, 655418, 65527, 65535, 1441850, 65527, 0, 1048634, 65528, 65535, 1441850, 65528, 0, 1048634, 65529, 65535, 1441850, 65529, 0, 1048634, 65530, 65535, 1441850, 65530, 0, 1048634, 65531, 65535, 1441850, 65531, 0, 1048634, 65532, 65535, 1441850, 65532, 0, 1048634, 65533, 65535, 1441850, 65533, 0, 1048634, 65534, 65535, 1441850, 65534, 0, 1048634, 65525, 9, 58, 65525, 10, 1441865, 65526, 9, 1441863, 65526, 10, 33, 65527, 9, 1441850, 65527, 10, 33, 65528, 9, 1441850, 65528, 10, 33, 65529, 9, 1441850, 65529, 10, 33, 65530, 9, 1441850, 65530, 10, 33, 65531, 9, 1441850, 65531, 10, 33, 65532, 9, 1441850, 65532, 10, 33, 65533, 9, 1441850, 65533, 10, 33, 65534, 9, 1441850, 65534, 10, 33, 1, 9, 1441850, 1, 10, 33, 2, 9, 1441850, 2, 10, 33, 3, 9, 1441850, 3, 10, 33, 4, 9, 1441850, 4, 10, 33, 5, 9, 1441850, 5, 10, 33, 6, 9, 1441850, 6, 10, 33, 7, 9, 1441850, 7, 10, 33, 8, 9, 1441850, 8, 10, 33, 9, 9, 71, 9, 10, 33, 10, 9, 655418, 10, 10, 69, 11, 9, 1, 11, 10, 1, 9, 1, 58, 9, 2, 58, 9, 3, 58, 9, 4, 58, 9, 5, 58, 9, 6, 58, 9, 7, 58, 9, 8, 58, 10, 1, 655418, 10, 2, 655418, 10, 3, 655418, 10, 4, 655418, 10, 5, 655418, 10, 6, 655418, 10, 7, 655418, 10, 8, 655418, 9, 65527, 58, 9, 65528, 58, 9, 65529, 58, 9, 65530, 58, 9, 65531, 58, 9, 65532, 58, 9, 65533, 58, 9, 65534, 58, 10, 65527, 655418, 10, 65528, 655418, 10, 65529, 655418, 10, 65530, 655418, 10, 65531, 655418, 10, 65532, 655418, 10, 65533, 655418, 10, 65534, 655418, 10, 65535, 655418, 10, 0, 655418, 65535, 65525, 1441850, 65535, 65526, 1048647, 0, 65525, 1441850, 0, 65526, 655431, 1, 65525, 1441850, 1, 65526, 1048634, 2, 65525, 1441850, 2, 65526, 1048634, 3, 65525, 1441850, 3, 65526, 1048634, 4, 65525, 1441850, 4, 65526, 1048634, 5, 65525, 1441850, 5, 65526, 1048634, 6, 65525, 1441850, 6, 65526, 1048634, 7, 65525, 1441850, 7, 65526, 1048634, 8, 65525, 1441850, 8, 65526, 1048634, 9, 65525, 1441850, 9, 65526, 1048647, 10, 65525, 33, 10, 65526, 33, 65535, 65527, 58, 0, 65527, 655418, 65525, 65525, 58, 65525, 65526, 58, 65526, 65525, 1441850, 65526, 65526, 655430, 65527, 65525, 1441850, 65527, 65526, 1048634, 65528, 65525, 1441850, 65528, 65526, 1048634, 65529, 65525, 1441850, 65529, 65526, 1048634, 65530, 65525, 1441850, 65530, 65526, 1048634, 65531, 65525, 1441850, 65531, 65526, 1048634, 65532, 65525, 1441850, 65532, 65526, 1048634, 65533, 65525, 1441850, 65533, 65526, 1048634, 65534, 65525, 1441850, 65534, 65526, 1048634, 65524, 65527, 1, 65524, 65528, 1, 65524, 65529, 1, 65524, 65530, 1, 65524, 65531, 1, 65524, 65532, 1, 65524, 65533, 1, 65524, 65534, 1, 65524, 65535, 1, 65524, 0, 1, 65524, 1, 1, 65524, 2, 1, 65525, 65527, 58, 65525, 65528, 58, 65525, 65529, 58, 65525, 65530, 58, 65525, 65531, 58, 65525, 65532, 58, 65525, 65533, 58, 65525, 65534, 58, 65525, 65535, 58, 65525, 0, 58, 65525, 1, 58, 65525, 2, 58, 65526, 65535, 1441863, 65526, 0, 655431, 65524, 3, 1, 65524, 4, 1, 65524, 5, 1, 65524, 6, 1, 65524, 7, 1, 65524, 8, 1, 65524, 9, 1, 65524, 10, 1, 65525, 3, 58, 65525, 4, 58, 65525, 5, 58, 65525, 6, 58, 65525, 7, 58, 65525, 8, 58, 65524, 65525, 1, 65524, 65526, 1, 1, 65534, 655453, 65526, 65527, 655418, 65526, 65528, 655418, 65526, 65529, 655418, 65526, 65530, 655418, 65526, 65531, 655418, 65526, 65532, 655418, 65526, 65533, 655418, 65526, 65534, 655418, 65526, 1, 655418, 65526, 2, 655418, 65526, 3, 655418, 65526, 4, 655418, 65526, 5, 655418, 65526, 6, 655418, 65526, 7, 655418, 65526, 8, 655418, 1, 65527, 655453, 1, 65528, 655453, 1, 65529, 655453, 1, 65530, 655453, 1, 65531, 655453, 1, 65532, 655453, 1, 65533, 655453, 2, 65527, 655453, 2, 65528, 655453, 2, 65529, 655453, 2, 65530, 655453, 2, 65531, 655453, 2, 65532, 655453, 2, 65533, 655453, 2, 65534, 655453, 3, 65527, 655453, 3, 65528, 655453, 4, 65527, 655453, 4, 65528, 655453, 5, 65527, 655453, 5, 65528, 655453, 6, 65527, 655453, 6, 65528, 655453, 7, 65527, 655453, 7, 65528, 655453, 8, 65527, 655453, 8, 65528, 655453, 8, 65529, 655453, 8, 65530, 655453, 8, 65531, 655453, 8, 65532, 655453, 8, 65533, 655453, 8, 65534, 655453, 65527, 65527, 655453, 65527, 65528, 655453, 65527, 65529, 655453, 65527, 65530, 655453, 65527, 65531, 655453, 65527, 65532, 655453, 65527, 65533, 655453, 65527, 65534, 655453, 65528, 65527, 655453, 65528, 65528, 655453, 65528, 65529, 655453, 65528, 65530, 655453, 65528, 65531, 655453, 65528, 65532, 655453, 65528, 65533, 655453, 65528, 65534, 655453, 65529, 65527, 655453, 65529, 65528, 655453, 65530, 65527, 655453, 65530, 65528, 655453, 65531, 65527, 655453, 65531, 65528, 655453, 65532, 65527, 655453, 65532, 65528, 655453, 65533, 65527, 655453, 65533, 65528, 655453, 65534, 65527, 655453, 65534, 65528, 655453, 65534, 65529, 655453, 65534, 65530, 655453, 65534, 65531, 655453, 65534, 65532, 655453, 65534, 65533, 655453, 65534, 65534, 655453, 65527, 1, 655453, 65527, 2, 655453, 65527, 3, 655453, 65527, 4, 655453, 65527, 5, 655453, 65527, 6, 655453, 65527, 7, 655453, 65527, 8, 655453, 65528, 7, 655453, 65528, 8, 655453, 65529, 7, 655453, 65529, 8, 655453, 65530, 7, 655453, 65530, 8, 655453, 65531, 7, 655453, 65531, 8, 655453, 65532, 7, 655453, 65532, 8, 655453, 65533, 7, 655453, 65533, 8, 655453, 65534, 7, 655453, 65534, 8, 655453, 1, 1, 655453, 1, 8, 655453, 2, 1, 655453, 2, 8, 655453, 3, 1, 655453, 3, 8, 655453, 4, 1, 655453, 4, 8, 655453, 5, 1, 655453, 5, 8, 655453, 6, 1, 655453, 6, 2, 655453, 6, 3, 655453, 6, 4, 655453, 6, 5, 655453, 6, 6, 655453, 6, 7, 655453, 6, 8, 655453, 7, 1, 655453, 7, 2, 655453, 7, 3, 655453, 7, 4, 655453, 7, 5, 655453, 7, 6, 655453, 7, 7, 655453, 7, 8, 655453, 8, 1, 655453, 8, 2, 655453, 8, 3, 655453, 8, 4, 655453, 8, 5, 655453, 8, 6, 655453, 8, 7, 655453, 8, 8, 655453, 11, 11, 1, 11, 12, 1, 12, 9, 1, 12, 10, 1, 12, 11, 1, 12, 12, 1, 65522, 11, 1, 65522, 12, 1, 65523, 11, 1, 65523, 12, 1, 65524, 11, 1, 65524, 12, 1, 65522, 65523, 1, 65522, 65524, 1, 65522, 65525, 1, 65522, 65526, 1, 65522, 65527, 1, 65522, 65528, 1, 65522, 65529, 1, 65522, 65530, 1, 65522, 65531, 1, 65522, 65532, 1, 65522, 65533, 1, 65522, 65534, 1, 65522, 65535, 1, 65522, 0, 1, 65522, 1, 1, 65522, 2, 1, 65522, 3, 1, 65522, 4, 1, 65522, 5, 1, 65522, 6, 1, 65522, 7, 1, 65522, 8, 1, 65522, 9, 1, 65522, 10, 1, 65523, 65523, 1, 65523, 65524, 1, 65523, 65525, 1, 65523, 65526, 1, 65523, 65527, 1, 65523, 65528, 1, 65523, 65529, 1, 65523, 65530, 1, 65523, 65531, 1, 65523, 65532, 1, 65523, 65533, 1, 65523, 65534, 1, 65523, 65535, 1, 65523, 0, 1, 65523, 1, 1, 65523, 2, 1, 65523, 3, 1, 65523, 4, 1, 65523, 5, 1, 65523, 6, 1, 65523, 7, 1, 65523, 8, 1, 65523, 9, 1, 65523, 10, 1, 65524, 65523, 1, 65524, 65524, 1, 65525, 65523, 1, 65525, 65524, 1, 65526, 65523, 1, 65526, 65524, 1, 65527, 65523, 1, 65527, 65524, 1, 65528, 65523, 1, 65528, 65524, 1, 65529, 65523, 1, 65529, 65524, 1, 65530, 65523, 1, 65530, 65524, 1, 65531, 65523, 1, 65531, 65524, 1, 65532, 65523, 1, 65532, 65524, 1, 65533, 65523, 1, 65533, 65524, 1, 65534, 65523, 1, 65534, 65524, 1, 65535, 65523, 1, 65535, 65524, 1, 0, 65523, 1, 0, 65524, 1, 1, 65523, 1, 1, 65524, 1, 2, 65523, 1, 2, 65524, 1, 3, 65523, 1, 3, 65524, 1, 4, 65523, 1, 4, 65524, 1, 5, 65523, 1, 5, 65524, 1, 6, 65523, 1, 6, 65524, 1, 7, 65523, 1, 7, 65524, 1, 8, 65523, 1, 8, 65524, 1, 9, 65523, 1, 9, 65524, 1, 10, 65523, 1, 10, 65524, 1, 11, 65523, 1, 11, 65524, 1, 12, 65523, 1, 12, 65524, 1, 11, 65525, 1, 11, 65526, 1, 11, 65527, 1, 11, 65528, 1, 11, 65529, 1, 11, 65530, 1, 11, 65531, 1, 11, 65532, 1, 11, 65533, 1, 11, 65534, 1, 11, 65535, 1, 11, 0, 1, 11, 1, 1, 11, 2, 1, 11, 3, 1, 11, 4, 1, 11, 5, 1, 11, 6, 1, 11, 7, 1, 11, 8, 1, 12, 65525, 1, 12, 65526, 1, 12, 65527, 1, 12, 65528, 1, 12, 65529, 1, 12, 65530, 1, 12, 65531, 1, 12, 65532, 1, 12, 65533, 1, 12, 65534, 1, 12, 65535, 1, 12, 0, 1, 12, 1, 1, 12, 2, 1, 12, 3, 1, 12, 4, 1, 12, 5, 1, 12, 6, 1, 12, 7, 1, 12, 8, 1, 1, 2, 655453, 1, 3, 655453, 1, 4, 655453, 1, 5, 655453, 1, 6, 655453, 1, 7, 655453, 65534, 1, 1, 65534, 2, 1, 65534, 3, 1, 65534, 4, 1, 65534, 5, 1, 65534, 6, 1, 65528, 6, 1, 65528, 5, 1, 65528, 4, 1, 65528, 3, 1, 65528, 2, 1, 65528, 1, 1, 65533, 1, 1, 65529, 6, 1, 65530, 6, 1, 65531, 6, 1, 65532, 6, 1, 65533, 6, 1, 65529, 65529, 1, 65530, 65529, 1, 65529, 65534, 1, 3, 65534, 1, 65525, 11, 1, 65525, 12, 1, 65526, 11, 33, 65526, 12, 98, 65527, 11, 33, 65527, 12, 98, 65528, 11, 33, 65528, 12, 98, 65529, 11, 33, 65529, 12, 98, 65530, 11, 33, 65530, 12, 98, 65531, 11, 33, 65531, 12, 98, 65532, 11, 33, 65532, 12, 98, 65533, 11, 33, 65533, 12, 98, 65534, 11, 33, 65534, 12, 98, 65535, 11, 33, 65535, 12, 98, 0, 11, 33, 0, 12, 98, 1, 11, 33, 1, 12, 98, 2, 11, 33, 2, 12, 98, 3, 11, 33, 3, 12, 98, 4, 11, 33, 4, 12, 98, 5, 11, 33, 5, 12, 98, 6, 11, 33, 6, 12, 98, 7, 11, 33, 7, 12, 98, 8, 11, 33, 8, 12, 98, 9, 11, 33, 9, 12, 98, 10, 11, 1, 10, 12, 1)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="SUV-luxury" parent="Level" instance=ExtResource("20_6w7c3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.2562, -1)
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_k2g3o")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(-0.999959, 0, 0.00909069, 0, 1, 0, -0.00909069, 0, -0.999959, -31.423, 0, -24.6626)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hyn44")
+}
+
+[node name="Tutorial" type="Node" parent="."]
+
+[node name="Move" type="Area3D" parent="Tutorial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.216248, 0, -34)
+script = ExtResource("15_ecg1g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/Move"]
+shape = SubResource("BoxShape3D_rkm46")
+
+[node name="Shoot" type="Area3D" parent="Tutorial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
+script = ExtResource("16_hnm02")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/Shoot"]
+shape = SubResource("BoxShape3D_umfb7")
+
+[node name="TutorialTriggerZone" type="Area3D" parent="Tutorial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -31)
+script = ExtResource("17_8eyr8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/TutorialTriggerZone"]
+shape = SubResource("BoxShape3D_lthh0")
+
+[node name="教程隔挡" type="Node3D" parent="Tutorial"]
+
+[node name="教程隔挡1" type="MeshInstance3D" parent="Tutorial/教程隔挡"]
+transform = Transform3D(-3.0598e-07, 3, -1.31134e-07, 0, -1.31134e-07, -3, -7, -1.31134e-07, 5.73206e-15, 10.5529, 3.64381, 1.9937)
+mesh = ExtResource("21_iypa0")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Tutorial/教程隔挡/教程隔挡1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/教程隔挡/教程隔挡1/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_w1jfd")
+
+[node name="教程隔挡2" type="MeshInstance3D" parent="Tutorial/教程隔挡"]
+transform = Transform3D(-2.62268e-07, 3, -1.31134e-07, 0, -1.31134e-07, -3, -6, -1.31134e-07, 5.73206e-15, -11.0664, 3.34859, -0.0284506)
+mesh = ExtResource("21_iypa0")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Tutorial/教程隔挡/教程隔挡2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/教程隔挡/教程隔挡2/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_w1jfd")
+
+[node name="教程隔挡3" type="MeshInstance3D" parent="Tutorial/教程隔挡"]
+transform = Transform3D(-4.37114e-07, 3, -1.31134e-07, 0, -1.31134e-07, -3, -10, -1.31134e-07, 5.73206e-15, -11.0664, 3.34859, -29.166)
+mesh = ExtResource("21_iypa0")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Tutorial/教程隔挡/教程隔挡3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/教程隔挡/教程隔挡3/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_w1jfd")
+
+[node name="教程隔挡4" type="MeshInstance3D" parent="Tutorial/教程隔挡"]
+transform = Transform3D(-4.37114e-07, 3, -1.31134e-07, 0, -1.31134e-07, -3, -10, -1.31134e-07, 5.73206e-15, 10.2673, 3.34859, -29.1125)
+mesh = ExtResource("21_iypa0")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Tutorial/教程隔挡/教程隔挡4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/教程隔挡/教程隔挡4/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_w1jfd")
+
+[node name="Hint" type="Area3D" parent="Tutorial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.353)
+script = ExtResource("25_q8ymf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial/Hint"]
+shape = SubResource("BoxShape3D_umfb7")
+
+[node name="Boss" parent="." instance=ExtResource("25_6tm1w")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.0428748, 2.67277, 34.1628)
+
+[node name="Trigger_Zone" type="Node" parent="."]
+
+[node name="AudioStream_Clean" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_jjp2g")
+
+[node name="AudioStream_Nasty" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("28_6bv4t")
+
+[node name="Trigger_area_bubble" parent="." instance=ExtResource("3_4jba4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+bubble_type = 0
+
+[connection signal="enemy_spawn_ordered" from="." to="Enemies" method="_on_main_enemy_spawn_ordered"]
+[connection signal="cardroll_ordered" from="Player" to="." method="_on_player_cardroll_ordered"]
+[connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
+[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
+[connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]
+[connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]
+[connection signal="shift_pressed" from="Player" to="HUD" method="_on_player_shift_pressed"]
+[connection signal="weight_change_ordered" from="Player" to="." method="_on_player_weight_change_ordered"]
+[connection signal="wave_cleared" from="HUD" to="." method="_on_hud_wave_cleared"]
+[connection signal="body_entered" from="Level/GameOverArea" to="Player" method="_on_game_over_area_body_entered"]
+[connection signal="body_entered" from="Tutorial/Move" to="Tutorial/Move" method="_on_body_entered"]
+[connection signal="body_exited" from="Tutorial/Move" to="Tutorial/Move" method="_on_body_exited"]
+[connection signal="body_entered" from="Tutorial/Shoot" to="Tutorial/Shoot" method="_on_body_entered"]
+[connection signal="body_exited" from="Tutorial/Shoot" to="Tutorial/Shoot" method="_on_body_exited"]
+[connection signal="body_entered" from="Tutorial/TutorialTriggerZone" to="Tutorial/TutorialTriggerZone" method="_on_body_entered"]
+[connection signal="body_entered" from="Tutorial/Hint" to="Tutorial/Hint" method="_on_body_entered"]
+[connection signal="body_exited" from="Tutorial/Hint" to="Tutorial/Hint" method="_on_body_exited"]

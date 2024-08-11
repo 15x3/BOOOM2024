@@ -14,12 +14,13 @@ const PLAYER_START_POS : Vector3 = Vector3(0,2,37.841)
 
 #var enemy_left = 4
 # 概率控制变量
-var positive_weight = 0.5 # 抽中正面卡的权重
-var special_weight = 1.0 - positive_weight # 抽中正面卡时抽中强化卡的权重
+var positive_weight = 100 # 不再使用，改为全局变量
+var special_weight = 100 # 不再使用，改为全局变量
 @onready var positive_weight_bar = $HUD/CardPositiveWeightBar
 @onready var special_weight_bar = $HUD/CardSpecialWeightBar
 @onready var pixelshader : ShaderMaterial = preload("res://shaders/pixel_shader.tres")
 @export var enemy_scene : PackedScene
+@export var bubble : PackedScene
 
 
 # 初始化卡池
@@ -34,6 +35,7 @@ var cardpool = CardPool
 var current_wave = 1
 
 signal enemy_spawn_ordered
+signal random_rooled
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,7 +59,8 @@ func _ready() -> void:
 	if Global.RESET_BY_GAME_OVER >= 4:
 		pass
 
-	
+func _process(delta: float) -> void:
+	weight_calculate()
 	
 func _on_player_death_reloaded() -> void:
 	Global.DEATH_TIMES += 1 
@@ -210,20 +213,27 @@ func _on_hud_wave_cleared() -> void:
 	if Global.WAVES == 1: # 第二波，SHIFT机制引入
 		enemy_spawn_ordered.emit(5)
 		Global.IS_SHIFT_TRIGGERED = true
-		$HUD/Hint2.text = "单击[E]改变前方物体/敌人的重力"
-		$HUD/Hint2.visible = true
+		set_hint("单击[E]改变前方物体/敌人的重力")
 		await get_tree().create_timer(5).timeout
-		$HUD/Hint2.visible = false
-		$HUD/Hint2.text = "快速双击[E]改变自身重力，注意：位置高于建筑物时会受到环境伤害"
-		$HUD/Hint2.visible = true
+		set_hint("快速双击[E]改变自身重力")
+		await get_tree().create_timer(5).timeout
+		set_hint("注意：高于建筑时会受到环境伤害")
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
 		$HUD/Skillbar.visible = true
+		var bubble_instantiate = bubble.instantiate()
+		bubble_instantiate.position = Vector3(0,20,0)
+		bubble_instantiate.scale = Vector3(0.001,0.001,0.001)
+		bubble_instantiate.bubble_type = bubble_instantiate.BubbleType.RANDOM
+		add_child(bubble_instantiate)
+		var bubble_tween = bubble_instantiate.create_tween()
+		bubble_tween.tween_property(bubble_instantiate,"scale",Vector3(1,1,1),5)
+		print("tween")
 	elif Global.WAVES == 2 or Global.WAVES == 3 : # 第三第四波，正常增加怪物，增加车辆
 		enemy_spawn_ordered.emit(6)
-	elif Global.WAVES == 4:
+	elif Global.WAVES == 4: # 第四波，启动摇奖器，不做任何
 		enemy_spawn_ordered.emit(10)
-		$HUD/Hint2.text = "前往中央的黑洞处可切换当前游戏主题"
+		$HUD/Hint2.text = ""
 		$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
@@ -231,9 +241,51 @@ func _on_hud_wave_cleared() -> void:
 		$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
-	elif current_wave >= 6 or current_wave == 7 or current_wave == 8:
-		pass
-	elif current_wave == 9:
-		pass
+	elif Global.WAVES == 5: # 不公平随机性介绍/场景切换介绍
+		enemy_spawn_ordered.emit(10)
+		var bubble_instantiate = bubble.instantiate()
+		bubble_instantiate.position = Vector3(0,20,0)
+		bubble_instantiate.bubble_type = bubble_instantiate.BubbleType.RE
+		add_child(bubble_instantiate)
+		set_hint("进入泡泡传送门可在游戏主题间切换")
+		#$HUD/Hint2.visible = false
+		#$HUD/Hint2.text = "可以通过进入场地中央的黑洞在游戏主题间切换"
+		#$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		set_hint("不同主题下，击杀怪物/场景交互的核心机制将有所不同")
+		#$HUD/Hint2.visible = false
+		#$HUD/Hint2.text = "不同主题下，击杀怪物/场景交互的核心机制将有所不同"
+		#$HUD/Hint2.visible = true
+		await get_tree().create_timer(5).timeout
+		$HUD/Hint2.visible = false
+	elif Global.WAVES == 6 or Global.WAVES == 7 or Global.WAVES == 8: # 
+		enemy_spawn_ordered.emit(15)
 	elif current_wave ==10:
 		pass
+
+func set_hint(word:String):
+		$HUD/Hint2.visible = false
+		$HUD/Hint2.text = word
+		$HUD/Hint2.visible = true
+
+func weight_calculate():
+	Global.POSITIVE_WEIGHT -= 0.01
+	Global.SPECIAL_WEIGHT -= 0.01
+	var positive_weight_cal = Global.POSITIVE_WEIGHT / 200
+	var special_weight_cal = Global.SPECIAL_WEIGHT / 200
+	var negative_weight_cal = 1 - positive_weight_cal - special_weight_cal
+
+func random_rool():
+	var draw = randi_range(1,200)
+	var special_weight_max_range = Global.POSITIVE_WEIGHT + Global.SPECIAL_WEIGHT
+	if draw <= Global.POSITIVE_WEIGHT:
+		return "health"
+	elif draw > Global.POSITIVE_WEIGHT and draw <= special_weight_max_range:
+		return "power"
+	else: 
+		return "none"
+
+
+func _on_hud_kill_count_reached() -> void:
+	var result = random_rool()
+	random_rooled.emit(result)

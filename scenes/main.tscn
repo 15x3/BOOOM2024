@@ -1,7 +1,8 @@
-[gd_scene load_steps=50 format=3 uid="uid://fo7h71f3j727"]
+[gd_scene load_steps=51 format=3 uid="uid://fo7h71f3j727"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqkch"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_elriq"]
+[ext_resource type="PackedScene" uid="uid://bnsxavfn2uxew" path="res://scenes/trigger_area_bubble.tscn" id="3_4jba4"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_s8mkj"]
 [ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="4_6d54a"]
 [ext_resource type="Theme" uid="uid://cyg1er5tn6vi8" path="res://ui/theme_kenneys.tres" id="6_1fiqt"]
@@ -217,6 +218,7 @@ points = PackedVector3Array(-1, 0, -0.5, -1, 0, 0.5, -1, 0.15, -0.5, 1, 0, -0.5,
 [node name="Main" type="Node3D"]
 script = ExtResource("1_pqkch")
 enemy_scene = ExtResource("8_7ty2f")
+bubble = ExtResource("3_4jba4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_acvlh")
@@ -280,13 +282,11 @@ vertical_alignment = 2
 script = ExtResource("11_brik8")
 
 [node name="Theme" type="Label" parent="HUD"]
-visible = false
 offset_left = 57.0
 offset_top = 518.0
 offset_right = 367.0
 offset_bottom = 575.0
-text = "当前主题：⬆SHIFT⬇
-"
+text = "当前主题：不公平随机性"
 label_settings = ExtResource("7_rqqqd")
 script = ExtResource("11_brik8")
 
@@ -309,22 +309,61 @@ offset_bottom = 60.0
 
 [node name="CardPositiveWeightBar" type="ProgressBar" parent="HUD"]
 visible = false
-offset_left = 1217.0
-offset_top = 147.0
-offset_right = 1256.0
-offset_bottom = 570.0
+offset_left = 620.0
+offset_top = 15.0
+offset_right = 920.0
+offset_bottom = 65.0
 theme = ExtResource("6_1fiqt")
-fill_mode = 3
+value = 51.29
+fill_mode = 1
+
+[node name="Label" type="Label" parent="HUD/CardPositiveWeightBar"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 68.0
+offset_right = 298.0
+offset_bottom = 105.0
+text = "抽中 ♥ 概率"
+horizontal_alignment = 1
+
+[node name="Slected" type="Label" parent="HUD/CardPositiveWeightBar"]
+visible = false
+layout_mode = 0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 117.0
+text = "_____________"
+label_settings = ExtResource("7_rqqqd")
+horizontal_alignment = 1
 
 [node name="CardSpecialWeightBar" type="ProgressBar" parent="HUD"]
 visible = false
-offset_left = 1163.0
-offset_top = 147.0
-offset_right = 1202.0
-offset_bottom = 570.0
+offset_left = 925.0
+offset_top = 15.0
+offset_right = 1225.0
+offset_bottom = 65.0
 theme = ExtResource("6_1fiqt")
-fill_mode = 3
+value = 30.53
 metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HUD/CardSpecialWeightBar"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 68.0
+offset_right = 298.0
+offset_bottom = 105.0
+text = "抽中⚡概率"
+horizontal_alignment = 1
+
+[node name="Slected" type="Label" parent="HUD/CardSpecialWeightBar"]
+visible = false
+layout_mode = 0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 117.0
+text = "_____________"
+label_settings = ExtResource("7_rqqqd")
+horizontal_alignment = 1
 
 [node name="EnemyLeft" type="RichTextLabel" parent="HUD"]
 visible = false
@@ -391,16 +430,15 @@ text = "Cool_Down [===============]"
 label_settings = ExtResource("7_rqqqd")
 
 [node name="Random" type="CanvasLayer" parent="HUD"]
-visible = false
 
-[node name="Label" type="Label" parent="HUD/Random"]
-offset_left = 685.0
+[node name="Label" type="RichTextLabel" parent="HUD/Random"]
+offset_left = 940.0
 offset_top = 11.0
-offset_right = 1261.0
-offset_bottom = 48.0
-text = "卡池余量：20 |-----|-----|-----|
-"
-label_settings = ExtResource("7_rqqqd")
+offset_right = 1240.0
+offset_bottom = 71.0
+theme = ExtResource("6_1fiqt")
+bbcode_enabled = true
+text = "[right][font size=40]|-----|[/font]"
 
 [node name="对话" type="Label" parent="HUD"]
 offset_left = 362.0
@@ -585,6 +623,9 @@ shape = SubResource("BoxShape3D_umfb7")
 [node name="Boss" parent="." instance=ExtResource("25_6tm1w")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.0428748, 2.67277, 34.1628)
 
+[node name="Trigger_area_bubble" parent="." instance=ExtResource("3_4jba4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9534, 5.23881, 16.9369)
+
 [node name="AudioStream_Clean" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("27_jjp2g")
 
@@ -592,6 +633,7 @@ stream = ExtResource("27_jjp2g")
 stream = ExtResource("28_6bv4t")
 
 [connection signal="enemy_spawn_ordered" from="." to="Enemies" method="_on_main_enemy_spawn_ordered"]
+[connection signal="random_rooled" from="." to="HUD" method="_on_main_random_rooled"]
 [connection signal="cardroll_ordered" from="Player" to="." method="_on_player_cardroll_ordered"]
 [connection signal="death_reloaded" from="Player" to="." method="_on_player_death_reloaded"]
 [connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
@@ -599,6 +641,8 @@ stream = ExtResource("28_6bv4t")
 [connection signal="scene_filp_ordered" from="Player" to="." method="_on_player_scene_filp_ordered"]
 [connection signal="shift_pressed" from="Player" to="HUD" method="_on_player_shift_pressed"]
 [connection signal="weight_change_ordered" from="Player" to="." method="_on_player_weight_change_ordered"]
+[connection signal="kill_count_reached" from="HUD" to="." method="_on_hud_kill_count_reached"]
+[connection signal="power_updated" from="HUD" to="HUD" method="_on_power_updated"]
 [connection signal="wave_cleared" from="HUD" to="." method="_on_hud_wave_cleared"]
 [connection signal="body_entered" from="Level/GameOverArea" to="Player" method="_on_game_over_area_body_entered"]
 [connection signal="body_entered" from="Tutorial/Move" to="Tutorial/Move" method="_on_body_entered"]

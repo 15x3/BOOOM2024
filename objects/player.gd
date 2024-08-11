@@ -26,6 +26,7 @@ var rotation_target: Vector3
 var input_mouse: Vector2
 
 var health:int = 100
+var power:int = 50
 var gravity := 0.0
 var grav_constract := 15
 #SHIFT - 修改参数，增加Grav_constract作为修改重力

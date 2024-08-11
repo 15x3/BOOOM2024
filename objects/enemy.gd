@@ -77,9 +77,15 @@ func _physics_process(delta):
 
 func destroy():
 	Audio.play("sounds/enemy_destroy.ogg")
-
+	
+	if Global.IS_IN_RANDOM:
+		if Global.RANDOM_SPECIAL_SELECTED:
+			pass
+		else:
+			pass
 	destroyed = true
 	emit_signal("spawn_or_destroyed")
+	#spawn_or_destroyed.emit(1)
 	queue_free()
 	
 
