@@ -383,7 +383,8 @@ func damage(amount):
 func on_double_press():
 	#emit_signal("scene_filp_ordered")
 	reset_press_state()
-	grav_constract = -grav_constract
+	if !Global.IS_IN_RANDOM:
+		grav_constract = -grav_constract
 
 func start_waiting_for_second_press():
 	is_waiting_for_second_press = true
@@ -398,7 +399,10 @@ func update_press_timer(delta):
 
 func on_single_press():
 	#grav_constract = -grav_constract
-	change_others_gravity()
+	if Global.IS_IN_RANDOM:
+		Global.RANDOM_SPECIAL_SELECTED = !Global.RANDOM_SPECIAL_SELECTED
+	else:
+		change_others_gravity()
 	reset_press_state()
 
 func reset_press_state():

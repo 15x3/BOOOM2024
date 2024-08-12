@@ -16,6 +16,9 @@ func _process(delta: float) -> void:
 		Engine.time_scale = 1.0
 		$MainMenu.queue_free()
 		Global.IS_IT_GAME_STARTED = true
+	random_progress_bar_update()
+	if Global.IS_IN_MIAMI:
+		$Skillbar.text = "⚡ " + str($"../MiamiTimer".time_left)
 	if Global.IS_IN_RANDOM:
 		if Global.RANDOM_SPECIAL_SELECTED:
 			$CardPositiveWeightBar/Slected.visible = false
@@ -52,21 +55,21 @@ func _on_power_updated(power) -> void:
 		power_bar_str += "]"
 		$Skillbar.text = "⚡  " + str(power) + "% " + power_bar_str
 
-func _on_player_shift_pressed() -> void:
-	if Global.IS_MIAMI_TRIGGERED:
-		for i in range(1,10):
-			pixelshader.set_shader_parameter("quantize_size",i)
-			await get_tree().create_timer(0.05).timeout 
-		for i in range(10,1,-1):	
-			pixelshader.set_shader_parameter("quantize_size",i)
-			await get_tree().create_timer(0.05).timeout 
-		if Global.IS_IT_MIAMI:
-			audioStream_clean.play(audioStream_nasty.get_playback_position())
-			audioStream_nasty.stop()
-		else:
-			audioStream_nasty.play(audioStream_clean.get_playback_position())
-			audioStream_clean.stop()
-		Global.IS_IT_MIAMI = !Global.IS_IT_MIAMI
+#func _on_player_shift_pressed() -> void:
+	#if Global.IS_MIAMI_TRIGGERED:
+		#for i in range(1,10):
+			#pixelshader.set_shader_parameter("quantize_size",i)
+			#await get_tree().create_timer(0.05).timeout 
+		#for i in range(10,1,-1):	
+			#pixelshader.set_shader_parameter("quantize_size",i)
+			#await get_tree().create_timer(0.05).timeout 
+		#if Global.IS_IT_MIAMI:
+			#audioStream_clean.play(audioStream_nasty.get_playback_position())
+			#audioStream_nasty.stop()
+		#else:
+			#audioStream_nasty.play(audioStream_clean.get_playback_position())
+			#audioStream_clean.stop()
+		#Global.IS_IT_MIAMI = !Global.IS_IT_MIAMI
 
 func _on_enemy_spawn_or_destroyed(num) -> void:
 	kill_count += 1
@@ -90,23 +93,36 @@ func _on_enemy_spawn_or_destroyed(num) -> void:
 	if Global.IS_IN_RANDOM:
 		if Global.POSITIVE_WEIGHT:
 			Global.POSITIVE_WEIGHT += 10
+			if Global.POSITIVE_WEIGHT >= 100:
+				Global.POSITIVE_WEIGHT = 100
 		else:
 			Global.SPECIAL_WEIGHT += 10
+			if Global.POSITIVE_WEIGHT >= 100:
+				Global.POSITIVE_WEIGHT = 100
 
 func random_progress_bar_update():
 	$CardPositiveWeightBar.value = Global.POSITIVE_WEIGHT
 	$CardSpecialWeightBar.value = Global.SPECIAL_WEIGHT
 	pass
 
-
 func _on_main_random_rooled(result) -> void:
 	if result == "health":
 		$"../Player".health += 10
+		if $"../Player".health > 100:
+			$"../Player".health = 100
+		$Random/Label.clear()
+		$Random/Label.append_text("[right][font size=40]|-♥-|[/font]")
+		_on_health_updated($"../Player".health)
 	if result == "power":
 		$"../Player".power += 10
+		if $"../Player".power > 100:
+			$"../Player".power = 100
+		$Random/Label.clear()
+		$Random/Label.append_text("[right][font size=40]|-⚡-|[/font]")
 		power_updated.emit($"../Player".power)
 	else:
-		pass
+		$Random/Label.clear()
+		$Random/Label.append_text("[right][font size=40]|-×-|[/font]")
 	
 func kill_count_update():
 	if kill_count == 0:
@@ -114,18 +130,31 @@ func kill_count_update():
 		$Random/Label.append_text("[shake rate=32 level=15][font size=40][right]|-----|[/right][/font][/shake]")
 		await get_tree().create_timer(0.5).timeout
 		$Random/Label.clear()
-		$Random/Label.append_text("[font size=40][right]|-----|")
+		$Random/Label.append_text("[right][font size=40]|-----|")
 	elif kill_count == 1:
 		$Random/Label.clear()
 		$Random/Label.append_text("[shake rate=32 level=15][font size=40][right]|--X--|[/right][/font][/shake]")
 		await get_tree().create_timer(0.5).timeout
 		$Random/Label.clear()
-		$Random/Label.append_text("[font size=40][right]|--X--|")
+		$Random/Label.append_text("[right][font size=40]|--X--|")
 	elif kill_count ==2:
 		$Random/Label.clear()
 		$Random/Label.append_text("[shake rate=32 level=15][font size=40][right]|-XX--|[/right][/font][/shake]")
 		await get_tree().create_timer(0.5).timeout
 		$Random/Label.clear()
-		$Random/Label.append_text("[font size=40][right]|-XX--|")
+		$Random/Label.append_text("[right][font size=40]|-XX--|")
 	else:
 		pass
+
+func _on_miami_timer_timeout() -> void:
+	for i in range(1,10):
+		pixelshader.set_shader_parameter("quantize_size",i)
+		await get_tree().create_timer(0.05).timeout 
+	Global.IS_IN_MIAMI = false
+	$Skillbar.text = "⚡   0% [          ]"
+	audioStream_nasty.play(audioStream_clean.get_playback_position())
+	audioStream_clean.stop()
+	$"../AnimationPlayer".play("new_animation_2")
+	for i in range(10,1,-1):	
+		pixelshader.set_shader_parameter("quantize_size",i)
+		await get_tree().create_timer(0.05).timeout 

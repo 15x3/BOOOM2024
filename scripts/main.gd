@@ -22,6 +22,7 @@ var special_weight = 100 # 不再使用，改为全局变量
 @export var enemy_scene : PackedScene
 @export var bubble : PackedScene
 
+var text_array = ["×","⚡","♥"]
 
 # 初始化卡池
 var cards: Array = []
@@ -237,7 +238,7 @@ func _on_hud_wave_cleared() -> void:
 		$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
-		$HUD/Hint2.text = "不同主题下，核心机制与怪物行为将有所不同"
+		$HUD/Hint2.text = "不同主题下，核心机制与怪物行为将不同"
 		$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
@@ -252,14 +253,18 @@ func _on_hud_wave_cleared() -> void:
 		#$HUD/Hint2.text = "可以通过进入场地中央的黑洞在游戏主题间切换"
 		#$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
-		set_hint("不同主题下，击杀怪物/场景交互的核心机制将有所不同")
+		set_hint("不同的泡泡传送门对应不同机制")
 		#$HUD/Hint2.visible = false
 		#$HUD/Hint2.text = "不同主题下，击杀怪物/场景交互的核心机制将有所不同"
 		#$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
-	elif Global.WAVES == 6 or Global.WAVES == 7 or Global.WAVES == 8: # 
+	elif Global.WAVES == 6:
+		Global.IS_MIAMI_TRIGGERED = true
 		enemy_spawn_ordered.emit(15)
+		$Trigger_area_miami.create_tween().tween_property(self,"position",Vector3(-15,40,15),5)
+		await get_tree().create_timer(5).timeout
+		$AnimationPlayer.play("new_animation_2")
 	elif current_wave ==10:
 		pass
 
@@ -269,8 +274,9 @@ func set_hint(word:String):
 		$HUD/Hint2.visible = true
 
 func weight_calculate():
-	Global.POSITIVE_WEIGHT -= 0.01
-	Global.SPECIAL_WEIGHT -= 0.01
+	Global.POSITIVE_WEIGHT -= 0.005
+	#print(Global.POSITIVE_WEIGHT)
+	Global.SPECIAL_WEIGHT -= 0.005
 	var positive_weight_cal = Global.POSITIVE_WEIGHT / 200
 	var special_weight_cal = Global.SPECIAL_WEIGHT / 200
 	var negative_weight_cal = 1 - positive_weight_cal - special_weight_cal
@@ -287,5 +293,10 @@ func random_rool():
 
 
 func _on_hud_kill_count_reached() -> void:
+	for i in range(1,8):
+		var mod = i % 3
+		$HUD/Random/Label.clear()
+		$HUD/Random/Label.append_text("[shake rate=32 level=15][font size=40][right]|-" + text_array[i % 3] + "-|[/right][/font][/shake]")
+		await get_tree().create_timer(0.1).timeout 
 	var result = random_rool()
 	random_rooled.emit(result)
