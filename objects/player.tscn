@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=12 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://objects/player.gd" id="1_ffboj"]
 [ext_resource type="Resource" uid="uid://cu2gtxlcmbb34" path="res://weapons/blaster-repeater.tres" id="2_6epbw"]
@@ -7,6 +7,8 @@
 [ext_resource type="Resource" uid="uid://c56y8pqoyk15f" path="res://weapons/blaster.tres" id="3_kr4p8"]
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="4_m6ukc"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/walking.ogg" id="5_ics1s"]
+[ext_resource type="AudioStream" uid="uid://dd7qg8y5aqb5w" path="res://sounds/Audio/powerUp2.ogg" id="5_xjog5"]
+[ext_resource type="AudioStream" uid="uid://w6yls7dbvpen" path="res://sounds/Audio/powerUp3.ogg" id="6_okuf2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
@@ -19,6 +21,8 @@ radius = 5.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("1_ffboj")
 weapons = Array[ExtResource("2_dwr1p")]([ExtResource("3_kr4p8"), ExtResource("2_6epbw")])
+grav_others = ExtResource("5_xjog5")
+grav_self = ExtResource("6_okuf2")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
@@ -76,6 +80,9 @@ normal_fade = 0.5
 stream = ExtResource("5_ics1s")
 volume_db = -5.0
 autoplay = true
+
+[node name="SoundEffects" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
 
 [node name="Cooldown" type="Timer" parent="."]
 one_shot = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://3yvf1jfhrkop"]
+[gd_scene load_steps=6 format=3 uid="uid://3yvf1jfhrkop"]
 
 [ext_resource type="PackedScene" uid="uid://coir7kewfabo3" path="res://models/free__blender_-_20xx_porsche_macan.glb" id="1_0cef8"]
 [ext_resource type="Script" path="res://scripts/boss.gd" id="1_a8alt"]
@@ -8,6 +8,9 @@ size = Vector3(10, 10, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_evp4s"]
 size = Vector3(1.48975, 1.24078, 3.43604)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_om7jl"]
+radius = 7.5
 
 [node name="Boss" type="CharacterBody3D"]
 script = ExtResource("1_a8alt")
@@ -24,4 +27,16 @@ shape = SubResource("BoxShape3D_ytjkv")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0339355, 0.0379333, -0.00415039)
 shape = SubResource("BoxShape3D_evp4s")
 
+[node name="GravityOrderArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 17
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GravityOrderArea"]
+shape = SubResource("CylinderShape3D_om7jl")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

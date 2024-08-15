@@ -3,6 +3,7 @@ signal gravity_change_ordered
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	self.mass = randf_range(0.5,2)
 	pass # Replace with function body.
 
 

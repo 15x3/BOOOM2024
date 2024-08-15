@@ -33,14 +33,16 @@ var levels_node: Node
 var enemies_node: Node
 var cardpool = CardPool
 
-var current_wave = 1
+#var current_wave = 1 # 不再使用
 
 signal enemy_spawn_ordered
 signal random_rooled
+signal boss_fight_ordered
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print(Global.DEATH_TIMES)
+	$Trigger_area_miami.position = Vector3(-155,30,0)
+	#print(Global.DEATH_TIMES)
 	levels_node = get_node("Level")
 	enemies_node = get_node("Enemies")
 	initialize_card_pool()
@@ -65,7 +67,18 @@ func _process(delta: float) -> void:
 	
 func _on_player_death_reloaded() -> void:
 	Global.DEATH_TIMES += 1 
-	get_tree().reload_current_scene()
+	$HUD/Death/Label.visible = true
+	Engine.time_scale = 0.1
+	await get_tree().create_timer(4).timeout
+	$PathBoss/PathFollow3D.progress_ratio = randf()
+	$Player.position = $PathBoss/PathFollow3D.position
+	$HUD/Death/Label.visible = false
+	Engine.time_scale = 1.0
+	$Player.health = 100
+	$HUD/Health.text = "♥ 100% [==========]"
+	$Player.power = 100
+	$HUD/Skillbar.text = "⚡  60% [==========]"
+	#get_tree().reload_current_scene()
 	
 #func _on_player_scene_filp_ordered() -> void:
 	#flip_levels()
@@ -206,10 +219,11 @@ func spawn_enemies(num) -> void:
 
 func _on_hud_wave_cleared() -> void:
 	Global.WAVES += 1
-	$HUD/WaveLabel.text = "第 "+str(Global.WAVES)+" / 15 波次"
-	$HUD/WaveLabel.visible = true
-	await get_tree().create_timer(5).timeout 
-	$HUD/WaveLabel.visible = false
+	if !Global.IS_BOSS_FIGHT:
+		$HUD/WaveLabel.text = "第 "+str(Global.WAVES)+" / 10 波次"
+		$HUD/WaveLabel.visible = true
+		await get_tree().create_timer(5).timeout 
+		$HUD/WaveLabel.visible = false
 	#enemy_spawn_ordered.emit(5)
 	if Global.WAVES == 1: # 第二波，SHIFT机制引入
 		enemy_spawn_ordered.emit(5)
@@ -229,44 +243,55 @@ func _on_hud_wave_cleared() -> void:
 		add_child(bubble_instantiate)
 		var bubble_tween = bubble_instantiate.create_tween()
 		bubble_tween.tween_property(bubble_instantiate,"scale",Vector3(1,1,1),5)
-		print("tween")
-	elif Global.WAVES == 2 or Global.WAVES == 3 : # 第三第四波，正常增加怪物，增加车辆
+	elif Global.WAVES == 2: 
+		#Global.IS_BOSS_FIGHT = true
+		#print("boss")
+		# 测试脚本
+		#Global.IS_BOSS_TRIGGER_READY = true
+		#emit_signal("boss_fight_ordered")
+		# 另一个测试
 		enemy_spawn_ordered.emit(6)
-	elif Global.WAVES == 4: # 第四波，启动摇奖器，不做任何
-		enemy_spawn_ordered.emit(10)
-		$HUD/Hint2.text = ""
-		$HUD/Hint2.visible = true
+		Global.IS_MIAMI_TRIGGERED = true
+		$Trigger_area_miami.create_tween().tween_property($Trigger_area_miami,"position",Vector3(-15,30,15),5)
 		await get_tree().create_timer(5).timeout
-		$HUD/Hint2.visible = false
-		$HUD/Hint2.text = "不同主题下，核心机制与怪物行为将不同"
-		$HUD/Hint2.visible = true
-		await get_tree().create_timer(5).timeout
-		$HUD/Hint2.visible = false
-	elif Global.WAVES == 5: # 不公平随机性介绍/场景切换介绍
+		$AnimationPlayer.play("new_animation_2")
+	elif Global.WAVES == 3: 
 		enemy_spawn_ordered.emit(10)
-		var bubble_instantiate = bubble.instantiate()
-		bubble_instantiate.position = Vector3(0,20,0)
-		bubble_instantiate.bubble_type = bubble_instantiate.BubbleType.RE
-		add_child(bubble_instantiate)
-		set_hint("进入泡泡传送门可在游戏主题间切换")
+		set_hint("每击杀3个敌人可触发一次自动摇奖")
+		await get_tree().create_timer(5).timeout
+		set_hint("具体奖励/击杀计数在右上方显示")
+		await get_tree().create_timer(5).timeout
+		set_hint("进入中央绿色泡泡内可改变概率")
+		await get_tree().create_timer(5).timeout
+	elif Global.WAVES == 4: # 不公平随机性介绍/场景切换介绍
+		enemy_spawn_ordered.emit(10)
+		#var bubble_instantiate = bubble.instantiate()
+		#bubble_instantiate.position = Vector3(0,20,0)
+		#bubble_instantiate.bubble_type = bubble_instantiate.BubbleType.RE
+		#add_child(bubble_instantiate)
+		set_hint("进入红色球将开启狂暴模式")
 		#$HUD/Hint2.visible = false
 		#$HUD/Hint2.text = "可以通过进入场地中央的黑洞在游戏主题间切换"
 		#$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
-		set_hint("不同的泡泡传送门对应不同机制")
+		set_hint("持续时间由⚡剩余值决定")
 		#$HUD/Hint2.visible = false
 		#$HUD/Hint2.text = "不同主题下，击杀怪物/场景交互的核心机制将有所不同"
 		#$HUD/Hint2.visible = true
 		await get_tree().create_timer(5).timeout
 		$HUD/Hint2.visible = false
-	elif Global.WAVES == 6:
-		Global.IS_MIAMI_TRIGGERED = true
-		enemy_spawn_ordered.emit(15)
-		$Trigger_area_miami.create_tween().tween_property(self,"position",Vector3(-15,40,15),5)
-		await get_tree().create_timer(5).timeout
-		$AnimationPlayer.play("new_animation_2")
-	elif current_wave ==10:
-		pass
+	elif Global.WAVES >= 5 and Global.WAVES != 10:
+		enemy_spawn_ordered.emit(Global.WAVES * 2)
+	elif Global.WAVES == 10: # BOSS COMING UP
+		$AudioStream_Clean.stop()
+		$AudioStream_Nasty.stop()
+		Global.IS_BOSS_TRIGGER_READY = true
+		emit_signal("boss_fight_ordered")
+		pass 
+	elif Global.WAVES >= 11:
+		if Global.IS_BOSS_FIGHT:
+			enemy_spawn_ordered.emit(10)
+
 
 func set_hint(word:String):
 		$HUD/Hint2.visible = false
@@ -274,9 +299,9 @@ func set_hint(word:String):
 		$HUD/Hint2.visible = true
 
 func weight_calculate():
-	Global.POSITIVE_WEIGHT -= 0.005
+	Global.POSITIVE_WEIGHT -= 0.002
 	#print(Global.POSITIVE_WEIGHT)
-	Global.SPECIAL_WEIGHT -= 0.005
+	Global.SPECIAL_WEIGHT -= 0.002
 	var positive_weight_cal = Global.POSITIVE_WEIGHT / 200
 	var special_weight_cal = Global.SPECIAL_WEIGHT / 200
 	var negative_weight_cal = 1 - positive_weight_cal - special_weight_cal

@@ -19,13 +19,26 @@ func _process(delta: float) -> void:
 	random_progress_bar_update()
 	if Global.IS_IN_MIAMI:
 		$Skillbar.text = "⚡ " + str($"../MiamiTimer".time_left)
+		#print($"../MiamiTimer".time_left)
 	if Global.IS_IN_RANDOM:
-		if Global.RANDOM_SPECIAL_SELECTED:
+		if !Global.RANDOM_SPECIAL_SELECTED:
 			$CardPositiveWeightBar/Slected.visible = false
 			$CardSpecialWeightBar/Slected.visible = true
 		else:
 			$CardPositiveWeightBar/Slected.visible = true
 			$CardSpecialWeightBar/Slected.visible = false
+	if Global.IS_BOSS_FIGHT == true:
+		var boss_str_count = int($"../Boss".health / 100)
+		var string_boss = "["
+		for i in range(20):
+			if i < boss_str_count:
+				string_boss += "="
+			else:
+				string_boss += " "
+		#var string_boss = "[" + "]
+#保■捷"
+		$Boss.text = string_boss
+		pass
 
 func _on_health_updated(health):
 	if health >= 100:
@@ -72,7 +85,17 @@ func _on_power_updated(power) -> void:
 		#Global.IS_IT_MIAMI = !Global.IS_IT_MIAMI
 
 func _on_enemy_spawn_or_destroyed(num) -> void:
-	kill_count += 1
+	if Global.IS_IN_RANDOM:
+		if Global.RANDOM_SPECIAL_SELECTED:
+			Global.POSITIVE_WEIGHT += 10
+			if Global.POSITIVE_WEIGHT >= 100:
+				Global.POSITIVE_WEIGHT = 100
+		else:
+			Global.SPECIAL_WEIGHT += 10
+			if Global.SPECIAL_WEIGHT >= 100:
+				Global.SPECIAL_WEIGHT = 100
+	else:
+		kill_count += 1
 	kill_count_update()
 	if kill_count >= 3:
 		kill_count_reached.emit()
@@ -80,8 +103,8 @@ func _on_enemy_spawn_or_destroyed(num) -> void:
 		pass
 	if $EnemyLeft.visible == false:
 		$EnemyLeft.visible = true
-	if $Random.visible == false:
-		$Random.visible = true
+	if $Random/Label.visible == false:
+		$Random/Label.visible = true
 	$EnemyLeft.clear()
 	Global.ENEMIES_LEFT += num
 	$EnemyLeft.append_text("[shake rate=32 level=15][font size=40]剩余敌人："+str(Global.ENEMIES_LEFT)+"[/font][/shake]")
@@ -90,15 +113,7 @@ func _on_enemy_spawn_or_destroyed(num) -> void:
 	$EnemyLeft.append_text("[font size=40]剩余敌人："+str(Global.ENEMIES_LEFT)+"[/font]")
 	if Global.ENEMIES_LEFT <= 0:
 		emit_signal("wave_cleared")
-	if Global.IS_IN_RANDOM:
-		if Global.POSITIVE_WEIGHT:
-			Global.POSITIVE_WEIGHT += 10
-			if Global.POSITIVE_WEIGHT >= 100:
-				Global.POSITIVE_WEIGHT = 100
-		else:
-			Global.SPECIAL_WEIGHT += 10
-			if Global.POSITIVE_WEIGHT >= 100:
-				Global.POSITIVE_WEIGHT = 100
+
 
 func random_progress_bar_update():
 	$CardPositiveWeightBar.value = Global.POSITIVE_WEIGHT
@@ -107,24 +122,28 @@ func random_progress_bar_update():
 
 func _on_main_random_rooled(result) -> void:
 	if result == "health":
-		$"../Player".health += 10
+		$"../Player".health += 20
 		if $"../Player".health > 100:
 			$"../Player".health = 100
 		$Random/Label.clear()
 		$Random/Label.append_text("[right][font size=40]|-♥-|[/font]")
+		$Random/Label2.visible = true
 		_on_health_updated($"../Player".health)
 	if result == "power":
-		$"../Player".power += 10
+		$"../Player".power += 20
 		if $"../Player".power > 100:
 			$"../Player".power = 100
 		$Random/Label.clear()
 		$Random/Label.append_text("[right][font size=40]|-⚡-|[/font]")
+		$Random/Label2.visible = true
 		power_updated.emit($"../Player".power)
 	else:
 		$Random/Label.clear()
 		$Random/Label.append_text("[right][font size=40]|-×-|[/font]")
+		$Random/Label2.visible = false
 	
 func kill_count_update():
+	$Random/Label2.visible = false
 	if kill_count == 0:
 		$Random/Label.clear()
 		$Random/Label.append_text("[shake rate=32 level=15][font size=40][right]|-----|[/right][/font][/shake]")
@@ -152,8 +171,11 @@ func _on_miami_timer_timeout() -> void:
 		await get_tree().create_timer(0.05).timeout 
 	Global.IS_IN_MIAMI = false
 	$Skillbar.text = "⚡   0% [          ]"
-	audioStream_nasty.play(audioStream_clean.get_playback_position())
-	audioStream_clean.stop()
+	if !Global.IS_BOSS_FIGHT and !Global.IS_BOSS_TRIGGER_READY:
+		audioStream_clean.play(audioStream_nasty.get_playback_position())
+		audioStream_nasty.stop()
+	$"../Player".damage_ampify = 1
+	$"../Player".movement_speed = 7
 	$"../AnimationPlayer".play("new_animation_2")
 	for i in range(10,1,-1):	
 		pixelshader.set_shader_parameter("quantize_size",i)

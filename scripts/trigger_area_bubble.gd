@@ -10,7 +10,7 @@ enum BubbleType { RANDOM, RE, MIAMI }
 @onready var pixelshader : ShaderMaterial = preload("res://shaders/pixel_shader.tres")
 @onready var audioStream_clean = $"../AudioStream_Clean"
 @onready var audioStream_nasty = $"../AudioStream_Nasty"
-
+@onready var audioStream_glitch = $"../GlitchPlayer"
 signal random_triggered
 signal re_triggered
 signal miami_triggered
@@ -40,16 +40,22 @@ func _on_body_entered(body: Node3D) -> void:
 
 
 func _on_miami_triggered() -> void:
-	if Global.IS_MIAMI_TRIGGERED:
+	if Global.IS_MIAMI_TRIGGERED and !Global.IS_IN_MIAMI:
 		for i in range(1,10):
 			pixelshader.set_shader_parameter("quantize_size",i)
 			await get_tree().create_timer(0.05).timeout 
-			Global.IS_IT_MIAMI = true
-			audioStream_clean.play(audioStream_nasty.get_playback_position())
-			audioStream_nasty.stop()
-			$"../MiamiTimer".start($"../Player".power / 10)
-			$"../AnimationPlayer".stop()
-			self.position = Vector3(-155,40,15)
+		Global.IS_IN_MIAMI = true
+		$"../GlitchPlayer".play()
+		if !Global.IS_BOSS_FIGHT and !Global.IS_BOSS_TRIGGER_READY:
+			audioStream_nasty.play(audioStream_clean.get_playback_position())
+			audioStream_clean.stop()
+		$"../Player".damage_ampify = 5
+		$"../Player".movement_speed = 20
+		$"../MiamiTimer".start($"../Player".power / 7)
+		$"../Player".power = 0
+		$"../AnimationPlayer".stop()
+		self.position = Vector3(-155,40,15)
+		$"../Player".grav_constract = 15
 		for i in range(10,1,-1):	
 			pixelshader.set_shader_parameter("quantize_size",i)
 			await get_tree().create_timer(0.05).timeout 
@@ -64,9 +70,12 @@ func _on_random_triggered() -> void:
 		$"../HUD/Random/Label".visible = false
 		$"../HUD/CardPositiveWeightBar".visible = true
 		$"../HUD/CardSpecialWeightBar".visible = true
+		$"../Player".grav_constract = 15
+		$"../GlitchPlayer".play()
 		for i in range(10,1,-1):
 			get_node("../HUD/PixelShader").material.set_shader_parameter("quantize_size",i)
 			await get_tree().create_timer(0.05).timeout 
+			self.create_tween().tween_property(self,"position",Vector3.ZERO,10)
 	else:
 		for i in range(1,10):
 			get_node("../HUD/PixelShader").material.set_shader_parameter("quantize_size",i)
@@ -78,11 +87,15 @@ func _on_random_triggered() -> void:
 		for i in range(10,1,-1):
 			get_node("../HUD/PixelShader").material.set_shader_parameter("quantize_size",i)
 			await get_tree().create_timer(0.05).timeout 
+		await get_tree().create_timer(5).timeout 
+		self.create_tween().tween_property(self,"position",Vector3(0,20,0),10)
 
 
 func _on_re_triggered() -> void:
-	Global.IS_IN_RANDOM = !Global.IS_IN_RANDOM
-	if Global.IS_IN_RANDOM:
-		$HUD/PixelShader.material.set_shader_parameter("shader_parameter/use_palette",true)
-		pass
-	pass # Replace with function body.
+	pass
+	
+	#Global.IS_IN_RANDOM = !Global.IS_IN_RANDOM
+	#if Global.IS_IN_RANDOM:
+		#$HUD/PixelShader.material.set_shader_parameter("shader_parameter/use_palette",true)
+		#pass
+	#pass # Replace with function body.

@@ -1,14 +1,30 @@
 extends CharacterBody3D
 
-
+@export var path_follow: PathFollow3D
+@export var duration = 40.0
+@onready var rotation_speed = 2 * PI / 0.5  # 0.5秒旋转一圈
+var progress_ratio = 0.378
+var health = 2000
 # Called when the node enters the scene tree for the first time.
+
+
 func _ready() -> void:
+
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if Global.IS_BOSS_FIGHT == true:
+		progress_ratio += delta / duration
+		#progress_ratio = progress_ratio % 1.0
+		# 4.0 之后不再允许模运算
+		progress_ratio = fmod(progress_ratio,1.0)
+		path_follow.progress_ratio = progress_ratio
+		self.position = path_follow.position
+		rotation.y += rotation_speed * delta
+		#change_others_gravity()
+		
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
@@ -37,6 +53,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			$"../HUD/对话".queue_free()
 			$"../HUD/Pause-button".queue_free()
 		elif Global.TUTORIAL:
+			Global.TUTORIAL = false
 			$"../Tutorial".queue_free()
 			$"../AnimationPlayer".play("intro_animation_2")
 			await get_tree().create_timer(3).timeout
@@ -59,3 +76,36 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 			Global.IS_IT_GAME_STARTED = true
 			Global.ENEMIES_LEFT = 0
 			$"../Enemies"._on_main_enemy_spawn_ordered(5)
+		elif Global.IS_BOSS_TRIGGER_READY:
+			Global.IS_BOSS_FIGHT = true
+			Global.IS_BOSS_TRIGGER_READY = false
+			$"../AudioStream_Nasty".play()
+			$"../HUD/Boss".visible = true
+			$"../HUD/对话".text = ""
+
+func change_others_gravity() -> void:
+		for child in $GravityOrderArea.get_overlapping_bodies():
+			if child.has_signal("gravity_change_ordered"):
+				child.emit_signal("gravity_change_ordered")
+		for child in $GravityOrderArea.get_overlapping_areas():
+			if child.has_signal("gravity_change_ordered"):
+				child.emit_signal("gravity_change_ordered")
+
+func _on_timer_timeout() -> void:
+	if Global.IS_BOSS_FIGHT == true:
+		change_others_gravity()
+		
+
+
+func _on_main_boss_fight_ordered() -> void:
+	$"../AnimationPlayer".play_backwards("intro_animation_2")
+	$"../HUD/对话".text = "车子又出现在了原地，进入车内以完成游戏！"
+	pass
+
+func damage(amount):
+	Audio.play("sounds/enemy_hurt.ogg")
+
+	health -= amount
+	if health <= 0:
+		Global.IS_BOSS_FIGHT = false # boss fight end
+		

@@ -3,14 +3,17 @@ extends CharacterBody3D
 
 # HACK - RE和SHIFT机制本身有一定联动性
 @export_subgroup("Properties")
-@export var movement_speed = 5
+@export var movement_speed = 7
 @export var jump_strength = 10
 
 @export_subgroup("Weapons")
 @export var weapons: Array[Weapon] = []
 
+@export_subgroup("Sounds")
+@export var grav_others: AudioStream
+@export var grav_self: AudioStream
 
-const DOUBLE_PRESS_THRESHOLD = 0.2
+const DOUBLE_PRESS_THRESHOLD = 0.3
 
 var weapon: Weapon
 var weapon_index := 0
@@ -29,6 +32,7 @@ var health:int = 100
 var power:int = 50
 var gravity := 0.0
 var grav_constract := 15
+var damage_ampify = 1 
 #SHIFT - 修改参数，增加Grav_constract作为修改重力
 
 var previously_floored := false
@@ -64,15 +68,10 @@ signal zone_triggered
 @onready var DialogueFinder = $PlayerArea3D
 @export var crosshair:TextureRect
 
-@onready var timer_bar = $"../HUD/ProgressBar"
 # Functions
 
 func _ready():
-	# 初始化 ProgressBar
-	timer_bar.visible = false
-	timer_bar.min_value = 0
-	timer_bar.max_value = DOUBLE_PRESS_THRESHOLD
-	timer_bar.value = 0
+
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	add_to_group("player")
 	weapon = weapons[weapon_index] # Weapon must never be nil
@@ -206,22 +205,22 @@ func handle_controls(_delta):
 		update_press_timer(_delta)
 
 	
-	if Input.is_action_just_pressed("shift"):
-		#Global.IS_IT_MIAMI = not Global.IS_IT_MIAMI
-		emit_signal("shift_pressed")
-		
-		# RE - 目前使用shift来主动触发,但是后续必须改成不能在游戏中主动触发(或者触发有条件)
+	#if Input.is_action_just_pressed("shift"):
+		##Global.IS_IT_MIAMI = not Global.IS_IT_MIAMI
+		#emit_signal("shift_pressed")
+		#
+		## RE - 目前使用shift来主动触发,但是后续必须改成不能在游戏中主动触发(或者触发有条件)
 	# RANDOM - 抽卡动作:
-	if Input.is_action_just_pressed("start_cardroll") and Global.IS_RANDOM_TRIGGERED:
-		emit_signal("cardroll_ordered")
-		print("开始一轮抽卡")
+	#if Input.is_action_just_pressed("start_cardroll") and Global.IS_RANDOM_TRIGGERED:
+		#emit_signal("cardroll_ordered")
+		#print("开始一轮抽卡")
 	
-	if Input.is_action_just_pressed("choose_card") and Global.IS_RANDOM_TRIGGERED:
-		emit_signal("card_choose_ordered")
-		print("按下选卡按钮")
+	#if Input.is_action_just_pressed("choose_card") and Global.IS_RANDOM_TRIGGERED:
+		#emit_signal("card_choose_ordered")
+		#print("按下选卡按钮")
 		
-	if Input.is_action_just_pressed("set_draw_weight") and Global.IS_RANDOM_TRIGGERED:
-		emit_signal("weight_change_ordered")
+	#if Input.is_action_just_pressed("set_draw_weight") and Global.IS_RANDOM_TRIGGERED:
+		#emit_signal("weight_change_ordered")
 	
 # Handle gravity
 
@@ -286,7 +285,7 @@ func action_shoot():
 			# Hitting an enemy
 			
 			if collider.has_method("damage"):
-				collider.damage(weapon.damage)
+				collider.damage(weapon.damage * (damage_ampify + Global.DEATH_TIMES * 0.2))
 			
 			# Creating an impact animation
 			
@@ -382,6 +381,8 @@ func damage(amount):
 
 func on_double_press():
 	#emit_signal("scene_filp_ordered")
+	$SoundEffects.stream = grav_self
+	$SoundEffects.play()
 	reset_press_state()
 	if !Global.IS_IN_RANDOM:
 		grav_constract = -grav_constract
@@ -389,16 +390,16 @@ func on_double_press():
 func start_waiting_for_second_press():
 	is_waiting_for_second_press = true
 	press_timer = 0.0
-	timer_bar.visible = true
 
 func update_press_timer(delta):
 	press_timer += delta
-	timer_bar.value = press_timer
 	if press_timer > DOUBLE_PRESS_THRESHOLD:
 		on_single_press()
 
 func on_single_press():
 	#grav_constract = -grav_constract
+	$SoundEffects.stream = grav_others
+	$SoundEffects.play()
 	if Global.IS_IN_RANDOM:
 		Global.RANDOM_SPECIAL_SELECTED = !Global.RANDOM_SPECIAL_SELECTED
 	else:
@@ -408,7 +409,6 @@ func on_single_press():
 func reset_press_state():
 	is_waiting_for_second_press = false
 	press_timer = 0.0
-	timer_bar.visible = false
 
 
 #func _on_game_over_area_body_entered(body: Node3D) -> void:

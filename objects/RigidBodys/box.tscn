@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cydnj35xorssg"]
+
+[ext_resource type="Script" path="res://scripts/car_rigidbody.gd" id="1_1qymq"]
+[ext_resource type="ArrayMesh" uid="uid://b2uubxp5iby7t" path="res://models/Car-kit/OBJ format/box.obj" id="2_degy3"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cxw0h"]
+points = PackedVector3Array(0.321736, 0.715, 0.321736, 0.321736, 0.679236, 0.3575, 0.35743, 0.679236, 0.321736, 0.321736, 0.715, -0.321806, -0.321806, 0.715, 0.321736, 0.321736, 0.035694, 0.3575, -0.321806, 0.679236, 0.3575, 0.35743, 0.679236, -0.321806, 0.35743, 0.035694, 0.321736, 0.321736, 0.679236, -0.3575, -0.321806, 0.715, -0.321806, -0.3575, 0.679236, 0.321736, 0.321736, 0, 0.321736, -0.321806, 0.035694, 0.3575, 0.35743, 0.035694, -0.321806, 0.321736, 0.035694, -0.3575, -0.321806, 0.679236, -0.3575, -0.3575, 0.679236, -0.321806, -0.3575, 0.035694, 0.321736, 0.321736, 0, -0.321806, -0.321806, 0, 0.321736, -0.321806, 0.035694, -0.3575, -0.3575, 0.035694, -0.321806, -0.321806, 0, -0.321806)
+
+[node name="SUV-luxury" type="RigidBody3D"]
+script = ExtResource("1_1qymq")
+
+[node name="Box" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_degy3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_cxw0h")
+
+[connection signal="gravity_change_ordered" from="." to="." method="_on_gravity_change_ordered"]
